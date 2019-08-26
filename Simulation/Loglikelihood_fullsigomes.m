@@ -16,27 +16,21 @@ d2=   theta(theta_idx(3)+2+m:theta_idx(4),1);
 d=[d1;d2]; % T
  
 
-%Omega=2*eye(T1*(m+1))+diag(-1*ones((T1-1)*(m+1),1),m+1)+diag(-1*ones((T1-1)*(m+1),1),-(m+1)); % T(m+1) byT(m+1)
+
 Omega=2*eye(T0)+diag(-1*ones((T1),1),1)+diag(-1*ones((T1),1),-1);
 
-%L1=ones(T0); 
-%L= tril(L1);
-%e1=ones(T0,1);
+
 psi=((Sigmae)^(-1))*omega1;
-%invSigmaE=pinv((kron(pinv(L'*L),eye(m+1)) )+(kron((e1*e1'), (psi-eye(m+1)))))*kron(eye(T1), pinv(Sigmae));
-%invSigmaE=((kron((L'*L)^(-1),eye(m+1)) )+(kron((e1*e1'), ((Sigmae)^(-1)*omega1-eye(m+1)))))^(-1)*kron(eye(T1+1), (Sigmae)^(-1));
 
 
 SigmaE=kron(Omega,Sigmae);
-%BigOmega=kron(Omega,eye(m+1));
-%BigOmega(1:m+1,1:m+1)=psi;
+BigOmega=kron(Omega,eye(m+1));
+BigOmega(1:m+1,1:m+1)=psi;
 SigmaE(1:m+1,1:m+1)=omega1;  % W
-%invSigmaE=pinv(SigmaE);
-%sqrOmega=BigOmega^(-0.5);
-sqrSigmaE = SigmaE^(-0.5); %try inv
+
+sqrOmega=BigOmega^(-0.5);
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
  Dd_hat_N = zeros(T0*(m+1),N);
     for j=1:size(d,1)
@@ -44,24 +38,20 @@ sqrSigmaE = SigmaE^(-0.5); %try inv
     end
  
  Dy_hat_N = zeros(T0*(m+1),N);
-    for jj=2:2:T0*(m+1)
+  for jj=2:2:T0*(m+1)
        Dy_hat_N(jj-1:jj,:) = Phi2*DW2_N(jj-1:jj,:);
-    end    
-    
-    
- 
-    
-    xsi_N = Dy - Dy_hat_N- Dd_hat_N; % T0*(m+1) by N   
+  end    
+  
+xsi_N = Dy - Dy_hat_N- Dd_hat_N; % T0*(m+1) by N   
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 C_N=(xsi_N*xsi_N')/N;  % T(m+1) by T(m+1)
 
 
 
 D_N=(sqrSigmaE)*C_N*(sqrSigmaE);
-%D_N=((kron(eye(T0),Sigmae))^(-1))*(sqrOmega)*C_N*(sqrOmega);
-%B = balance(D_N);
+D_N=((kron(eye(T0),Sigmae))^(-1))*(sqrOmega)*C_N*(sqrOmega);
+
 [V,D]=eig(D_N); % Tm by k or P=pca(D_N) P=pca(Omega^(-0.5)*Q*A^(-0.5))
 
 [Q,L1]=sortem(V,real(D));
@@ -69,19 +59,10 @@ D_N=(sqrSigmaE)*C_N*(sqrSigmaE);
 lambda=diag(L1); 
 
 
-%logL=-(1/2)*(log(det(SigmaE)))-(1/2)*sum(log(lambda(1:k*(m+1))))+(1/2)*(sum(lambda(1:k*(m+1)))-k*(m+1))-(1/2)*sum(lambda(1:(T1+1)*(m+1)));
-%logL=-(1/2)*(abs(log(det(SigmaE))))-(1/2)*sum(log(lambda(1:k)))+(1/2)*(sum(lambda(1:k))-k)-(1/2)*sum(lambda(1:(T1+1)));
-
-%logL=-((T)/2)*(real(log(det(Sigmae))))-(1/2)*(real(log(det(BigOmega))))-(1/2)*sum(log(lambda(1:k)))+(1/2)*(sum(lambda(1:k))-k)-(1/2)*sum(lambda(1:(T1)));
 
 logL=-(1/2)*(real(log(det(SigmaE))))-(1/2)*sum(log(lambda(1:k)))+(1/2)*(sum(lambda(1:k))-k)-(1/2)*sum(lambda(1:(T0)));
 
 
-
-
-%logL=-(T1/2)*(log(det(Sigmae)))-(1/2)*(log(det(SigmaE)))-(1/2)*sum(log(lambda(1:k)))+(1/2)*(sum(lambda(1:k))-k)-(1/2)*sum(lambda(1:T1));
-
 logL = -logL;
-% abs()imag() angle()
 
 end
