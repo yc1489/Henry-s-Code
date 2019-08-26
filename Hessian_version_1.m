@@ -1,8 +1,8 @@
 tic
-%computation here%
-% Case 1 (Covariance stationary and stable ;Assume factor is 2 )
+
+
 rep = 150;         % number of replications
-num_ini=10; % ***********************
+num_ini=10; 
 list_T = [7 ];     % list of time, T
 list_N = [100 300 500 ];   % list of N   
 %list_power = [0.00]; % for power computation
