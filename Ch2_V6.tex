@@ -1,0 +1,1339 @@
+\documentclass[12pt,a4paper,hyperref]{article}
+\usepackage[usenames,dvipsnames]{xcolor}
+\definecolor{darkblue}{rgb}{0.0, 0.0, 0.55}
+	\definecolor{ultramarine}{rgb}{0.07, 0.04, 0.56}
+\usepackage{amsmath, natbib, latexsym, array, amssymb,longtable,float, graphicx, appendix,lscape,diagbox,textcomp}
+\usepackage[colorlinks,
+            linkcolor=ultramarine,
+            anchorcolor=green,
+            citecolor=darkblue
+            ]{hyperref}
+\usepackage[flushleft]{threeparttable}
+\usepackage[top=2.7cm, left=3cm, right=3cm, bottom=2.7cm]{geometry}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=cyan,
+}
+
+\urlstyle{same}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{pgfplotstable}
+\sisetup{
+  round-mode          = places, % Rounds numbers
+  round-precision     = 2, % to 2 places
+}
+
+\newenvironment{sequation}{\begin{equation}\tiny}{\end{equation}}
+\DeclareMathOperator*{\plim}{plim}
+\renewcommand{\floatpagefraction}{0.60}
+\renewcommand{\appendixpagename}{\Large Appendix}
+\setcounter{secnumdepth}{3}
+\begin{document}
+\begin{titlepage}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
+
+\center % Center everything on the page
+
+%----------------------------------------------------------------------------------------
+%       HEADING SECTIONS
+%----------------------------------------------------------------------------------------
+\begin{figure}
+\centering
+\includegraphics[scale=0.3]{universityofyork.png}
+\end{figure}
+%\textsc{\LARGE University of York }\\[1.5cm] % Name of your university/college
+
+
+%----------------------------------------------------------------------------------------
+%       TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\HRule \\[0.4cm]
+{ \huge \bfseries Estimation in short panel vector autoregressions  with interactive effects}\\[0.4cm] % Title of your document
+\HRule \\[1.5cm]
+
+%----------------------------------------------------------------------------------------
+%       AUTHOR SECTION
+%----------------------------------------------------------------------------------------
+
+\begin{minipage}{0.4\textwidth}
+\begin{flushleft} \normalsize
+\emph{Author:}\\
+Yan-Ting \textsc{Chen} \thanks{PhD Student, Department of Economics and Related Studies, The University of York. E-mail: yc1489@york.ac.uk} \thanks{I would like to thank Takashi Yamagata and Vanessa Smith for valuable suggestions, comments and coding support in this draft. All errors remain mine. } % Your name
+\end{flushleft}
+\end{minipage}
+~
+\begin{minipage}{0.4\textwidth}
+\begin{flushright} \normalsize
+\emph{Supervisor:} \\
+Professor Takashi \textsc{Yamagata} \\
+Dr. Vanessa \textsc{Smith}   % Supervisor's Name
+\end{flushright}
+\end{minipage}\\[2cm]
+
+% If you don't want a supervisor, uncomment the two lines below and remove the section above
+%\Large \emph{Author:}\\
+%John \textsc{Smith}\\[3cm] % Your name
+
+%----------------------------------------------------------------------------------------
+%       DATE SECTION
+%----------------------------------------------------------------------------------------
+
+{\large \today}\\[2cm] % Date, change the \today to a set date if you want to be precise
+
+
+\vfill % Fill the rest of the page with whitespace
+
+\end{titlepage}
+
+\newpage
+\tableofcontents
+\newpage
+\section{Introduction}
+
+
+In the last several decades there has been a tremendous wave of interest in the study of panel data models with cross-sectional dependence error structures. This cross-sectional dependence error structures has been particularly influential in contributing insights into empirical research. Little empirical evidence has been gathered to support cross-sectional independent. Therefore, consider cross-sectional dependence in panel data models in research is reasonable. If we ignore cross-sectional dependence that will course inconsistent estimator and misleading inference. In recent years, there has been a dramatic proliferation of research on estimation method in more generalized of panel data models with cross-sectional dependent errors. In general, there are two structures of error terms that can allow cross sectional dependence, one is spatial error structure, the other is multi-factors error structure.\footnote{The dependence of spatial errors model is related to location, distance and economic distance. The dependence of multi-factors errors model is related to the relationship between factor and factor loading. } In this study, we focus on the model with interactive effects because by this setting we do not need to prespecify the weight matrix.
+
+The field of cross-sectional dependence on large $N$ and large $T$ panel data model has its surge of mainstream popularity motivated researchers to acknowledge its values in big data environment. But the study of the cross-sectional dependence on micro panel data is still important, it is not reasonable to assume the individuals that are not to be correlated.
+ However, there is very limited study on the cross-sectional dependence on micro panel data in the literature. \citet{Hayakawa:2018} proposed a quasi maximum likelihood (QML) estimation method on short $T$ dynamic panel data models with interactive effects.
+
+Besides QML estimation method, Generalize moment estimation method (GMM) has been a dramatic increase in dynamic panel data models. Many GMM estimators have been provided (\citet{Arellano:1991}, \citet{Arellano:1995} and \citet{Blundell:1998} etc. ). But weak instrument problems is a big challenge for GMM estimators.
+
+The property between QML estimator and GMM estimator are fundamental different.  QML estimator have some important issue to be overcome. There is, (1) how to treating initial value and (2) how to overcome incidental parameters. \citet{Hsiao:2002} proposed transform maximum likelihood (TML) estimator  for shot $T$ dynamic panel data models. By using first difference to eliminate individual effect, TML estimator can avoid the incidental parameters problem and treating initial value as random to prove this estimator is consistent in dynamic panel data model when T is fixed and N is large. In dynamic panel data model with regressors , the incidental parameters problem are arisen in the formulation of initial value of regressors. \citet{Hsiao:2002} dealt with this issues by using project method that project the past change of regressors on the current observed regressors in the formulation of the initial observations.
+ However, two issues that need to be answered in this regard are (a) if regressors are nonstational, would this project method can perfect project the past change of regressors on the current observed regressors ? (b) If the regressors are weakly exogenous,  would project the past change of regressors on the first observed regressors in the formulation of the initial observations ? These issues are beyond the scope of this study, but can find the answer on previous chapter. Besides, \citet{Hsiao:2015} derive the asymptotic properties of QMLE in dynamic panel data models. They show that even when N and T is going large and $N/T \rightarrow c$, QMLE is asymptotically biased if initial be treated as fixed constants. In Hsiaos’ research  , they show that treating initial value as fixed constant, QMLE is consistent only when N is small and T is large. They also show that if treating initial value as random transformed QMLE is consistent when N or T or both are large. Therefore, the issues of initial value is the object of study in QML estimator for dynamic panel data models. \citet{Hsiao:2018} also show that how to treat initial value is important for Quasi maximum likelihood estimator. Without the linear transformation, initial value are correlate with individual effects if we treat initial observation is fixed.
+
+The global economics often with persistent heterogeneities that make government hard to monitor and understand the global interdependencies. Therefore, to understand the heterogeneities of global transmission between different region and sectors is important for the government to make policy. Otherwise, policy makers can expect future tendencies by analyse transmission from past status to current status. \citet{Canova:2013} give the survey in panel vector autoregressive (VAR) model. Canova also describe how to use in macroeconomics and finance.
+
+Early theorization of the estimation and testing on short T panel VAR model with nonstationary individual effects can be traced back to \citet{Holtz:1988}. In this research,
+Holtzs’ also propose empirical results on dynamic relationships between wages and hours worked in American males. By using panel VAR model to analyze, the result shows that lagged hours is important in the hours equation.
+
+Besides the method of \citet{Holtz:1988}, who use instrumental variables to the quasi-differenced autoregressive equations, \citet{Binder:2005} first proposed QML estimation method for panel VAR models. In this study, Bunders’ compare random effect(RE) QML estimator and fixed effect(FE) QML estimator and also show that RE QML estimator is more efficient than FE QML estimator.
+Binders’ also investigate the performance of QML estimator and GMM estimator. Binders’give some simulation results that indicate the performance of QML estimator is better than GMM estimator when individual effects have large variations. They also proposed unit root test under the short $T$ panel VAR model. When $N$ tend to infinity, the unit root t statistic is asymptotically distributed as a standard normal. But this panel unit root test need the slop homogenous under small $T$. To allow panel unit root test with slope heterogeneity, the model require large N and large T. It is naturally to carry out the cointegration test. Besides, they also provide cointegration test to identify the variables cointegrated.\citet{Juodis:2017} extend QML estimation method to panel VAR models with additional strictly exogenous regressors and possible cross-sectional heteroscedasticity. In the results, \citet{ Juodis:2017} also shows that likelihood based estimator outperforms the GMM based estimator in terms of bias and root mean square error. Besides, \citet{ Juodis:2017} shows that multivariate of transformed likelihood estimator is only consistent under the restricted parameters set and unrestricted QML estimator can not be global identified under the three wave panel.
+
+
+
+
+Above estimation methods has focused on the panel data model with cross-sectional independent assumption. When the cross-sectional independent assumption be relaxed, there are two main approach to deal with this more flexible model, spatial model and factor model. It should be noted, however, few studies have been done on multivariable model with cross section dependence error term. In the multivariable models with spatial error term, \citet{Mutl:2009} provide the three steps estimation method on panel VAR with spatial dependence. For the panel VAR model with interactive effects, \citet{Bai:2013} and \citet{Moon:2017} provide estimation method, but less simulation study for VAR model in these papers. \citet{Huang:2008} also provide the estimation method on non-stationary panel VAR model in large N and large T data set. \citet{Huang:2008} use three steps to deal with the unobserved factor structure error term. In the first step, \citet{Huang:2008} use ordinary least squares(OLS) estimation by ignoring the cross-sectional dependence. In the second step, using the factor analysis to residual. In the third step, using the factor augmented FM method to reestimated. However, it is well known that using least square estimation on dynamic panel data with interactive effects is asymptotic bias when $N$ and $T$ is large (\citet{Moon:2017}). Therefore, it is hard to obtain accurate residual from first stage estimation.
+
+
+
+\citet{Hayakawa:2018} develop quasi maximum likelihood estimator for short $T$ dynamic panel data models with interactive effect. This similar with \citet{Hsiao:2002} transformed likelihood estimator is that they also applied quasi maximum likelihood estimation after taking first difference in the models. The advantage of taking first difference in models is that the incidental parameter problems can be avoided. Also, \citet{Hayakawa:2018} indicated that all parameters are locally identified. The Globally identification can only be allowed when the models do not contain lag dependent variable. Otherwise, \citet{Hayakawa:2018} provide sequentially test to estimate the number of factor.
+
+The purpose of this study was to extend univariate short $T$ dynamic panel data model to panel VAR models under the cross-sectional dependence assumption by \citet{Hayakawa:2018} method. This study may lead to a better understanding of cross sectional dynamic heterogeneities, cross-sectional dependence and the link across units in an unrestricted fashion. Especially, this quasi maximum likelihood estimator may have a great interest for application.
+
+The rest of this paper is structured as follow. In Section 2 we build the panel VAR model and underlying assumptions. The quasi likelihood estimator are presented in Section 3. We continue in Section 4 discussing the order condition and identification conditions. In Section 5 we derive its asymptotic distribution. Section 6 propose the unit root and cointegration test in panel with short $T$. Section 7 analyze the vector correlation model. Section 8 provide Monte Carlo simulation setting and results. Section 9 give some concluding remarks.
+
+
+
+
+
+
+
+\section{Short T panel VAR model with interactive effects}
+Structure panel VAR model allow researcer to interpret economic theory from impulse response  and variance decompositions.
+Therefore,  we begin consider the structural panel VAR(1) models with individual and time effects as below
+\begin{align}
+\boldsymbol{B}\boldsymbol{z}_{i,t}+\boldsymbol{\Pi}\boldsymbol{z}_{i,t-1}=\boldsymbol{c}_{i}+\boldsymbol{q}_{t}+\boldsymbol{v}_{i,t}, for \,\, t=1,\ldots, T;\,\,i=1,\ldots,N, \label{1.1}
+\end{align}
+where $\boldsymbol{B}$ and $\boldsymbol{\Pi}$ are $m$ by $m$ matrix of structural form parameters, $\boldsymbol{c}_{i}$ is $m$ by $1$ vector of individual effects, $\boldsymbol{q}_{t}$ is $m$ by $1$ vector of time effects, and $\boldsymbol{v}_{i,t}$  is $m$ by $1$ vector of error terms.  To allow cross-sectional dependence, we  extend error term that have multi-factor structure as follow:
+\begin{align}
+v_{i,t}=\boldsymbol{\Gamma}_{i}\boldsymbol{f}^{\ast}_{t}+\boldsymbol{u}_{i,t},
+\end{align}
+where  $\boldsymbol{\Gamma}_{i}$ is an $m$ by $r$ matrix of factor loadings, $\boldsymbol{f}^{\ast}_{t}$ is an $r$ by $1$ vector of unobserved common factor, and $\boldsymbol{u}_{i,t}$ is an $m$ by $1$ vector of idiosyncratic errors.
+And we define
+\begin{align}
+E(\boldsymbol{u}_{i,t})=0, \\
+E(\boldsymbol{u}_{i,t}, \boldsymbol{u}_{i,s})=0, \\
+Var(\boldsymbol{u}_{i,t})=\boldsymbol{\Sigma}_{u}.
+\end{align}
+
+
+
+Let $\boldsymbol{B}$ be an nonsingular matrix. Premultiplying $\boldsymbol{B}^{-1}$ to equation (\ref{1.1}),  structural panel VAR(1) models can be transformed to  reduced form panel VAR(1) models as below
+\begin{align}
+\boldsymbol{z}_{i,t}=\boldsymbol{\Phi} \boldsymbol{z}_{i,t-1}+\boldsymbol{a}_{i}+\boldsymbol{h}_{t}+ \boldsymbol{\xi}_{i,t}, \,\, for \,\, t=1,\ldots, T;\,\,i=1,\ldots,N, \label{1}
+\end{align}
+where $\boldsymbol{z}_{i,0}$ is observable, $\boldsymbol{\Phi}=-\boldsymbol{B}^{-1}\boldsymbol{\Pi}$ is an $m$ by $m$ matrix of unknown parameters, $\boldsymbol{a}_{i}=\boldsymbol{B}^{-1}\boldsymbol{c}_{i}$ is individual effects which is an $m$ by $1$ vector , $\boldsymbol{h}_{t}=\boldsymbol{B}^{-1}\boldsymbol{q}_{t}$ is time effects  which is an $m$ by $1$ vector, and $\boldsymbol{\xi}_{i,t}$ is $m$ by $1$ vector of error term.  Also, we begin with  the panel VAR model under the stationary assumption  and we focus on the short $T$ data set.
+We define the multi-factor structure error term in reduce VAR as
+\begin{align}
+\boldsymbol{B}^{-1}\boldsymbol{v}_{i,t}=\boldsymbol{\xi}_{i,t}=\boldsymbol{\Gamma}_{i}\boldsymbol{f}_{t}+\boldsymbol{\varepsilon}_{i,t}, \label{2}
+\end{align}
+where  $\boldsymbol{\Gamma}_{i}$ is an $m$ by $r$ matrix of factor loadings, $\boldsymbol{f}_{t}=\boldsymbol{B}^{-1}\boldsymbol{f}_{t}$ is an $r$ by $1$ vector of unobserved common factor, and $\boldsymbol{\varepsilon}_{i,t}$ is an $m$ by $1$ vector of idiosyncratic errors. \footnote{ \citet{Huang:2008} also proposed  the estimation method for panel VAR model with multi-factor structure error. The main difference between \citet{Huang:2008} and this study is that our model include individual and time effects and the estiamtion method is different. Also, our study focus on short $T$ panel VAR model but \citet{Huang:2008} consider panel VAR with large $N$ and large $T$.}
+
+
+
+In the multi-factor structure error term, we treat unobserved factor as fixed parameters, the associate factor loading as random and the factor loading is independent with idiosyncratic errors.
+ \citet{Bai:2013} also provide estimation method to panel VAR model with multi-factor structure. The main difference between  \citet{Bai:2013} and our model is that we use different method to overcome the incidental parameters problem. \citet{Moon:2017} also provide the estimation method on panel VAR model with multi-factor structure error. This study is less the simulation evidence on panel VAR model.
+
+At first, we give some standard assumptions, these assumptions are similar as \citet{Hsiao:2002}, \citet{Binder:2005} and \citet{Hayakawa:2018}\\ \\
+ \textbf{Assumption 1}  The idiosyncratic error $\boldsymbol{\varepsilon}_{i,t}$ are distributed independently for all i and t,and $E \left[\boldsymbol{\varepsilon}_{i,t}  \right]=\boldsymbol{0}$, variance is $m$ by $m$ symmetric positive define matrix, $E\left[\boldsymbol{\varepsilon}_{i,t} \boldsymbol{\varepsilon}^{'}_{i,t} \right]=\boldsymbol{\Sigma} $.  $\boldsymbol{\varepsilon}_{i,t}$ have finite fourth moment. \\ \\
+ \textbf{Assumption 2 }
+The Time effect, $\boldsymbol{h}_{t}$, and unobserved factor, $\boldsymbol{f}_{t}$ vary across all t. We assume $\boldsymbol{d}_{t}=\Delta \boldsymbol{h}_{t}\neq \boldsymbol{0}$ for $t=1,\ldots, T$, and $\boldsymbol{g}_{t}=\Delta \boldsymbol{f}_{t}\neq \boldsymbol{0} $ at least for some $t=2, \ldots T$. In this study, we assume number of factor is known\footnote{\citet{Hayakawa:2018} provide the sequential multiple testing likelihood ratio procedure for estimating the number of factors. This procedure can be applied to short T panel data sets.}. \\ \\
+ \textbf{Assumption 3 } The factor loading $\boldsymbol{\Gamma}_{i}$ have finite fourth moment
+The distribution of $\boldsymbol{\Gamma}_{i}$ are independently with idiosyncratic error $\boldsymbol{\varepsilon}_{j,t}$ and common factor $\boldsymbol{f}_{t}$, for all $i, j$ and $t$.
+The covariance matrix of $\boldsymbol{\Gamma}_{i}$ are finite and positive define.  \\ \\
+\textbf{Assumption 4}
+The vector individual effects, $\boldsymbol{a}_{i}$ might be correlated with $\boldsymbol{z}_{j,t}$, $\boldsymbol{\Gamma}_{j}$ and $\varepsilon_{j,t}$, for all $i, j, t$.
+\\ \\
+\textbf{Assumption 5}
+The factor loading, $\boldsymbol{\Gamma}_{i}$, for $i=1,2,\ldots,N$ are distributied independently of unobserved factor $\boldsymbol{f}_{t}$, for all $i$ and $t$, and $\boldsymbol{a}_{i}$ are iid with zero means and a finite  $rm$ by $rm$  covariance matrix, as
+\begin{align}
+Vec(\boldsymbol{\Gamma}_{i})\sim iid \left(\boldsymbol{0}, \boldsymbol{\Sigma}_{\Gamma} \right).
+\end{align}
+\\ \\
+\textbf{Assumption 6}
+Different variables have different factors,
+\begin{align}
+\Gamma_{\tau \ell i}\sim N\left(0,\sigma^{2}_{\Gamma \tau \ell}  \right), when\,\,\tau = \ell , \\
+\Gamma_{\tau \ell i}=0 ,\,\, when\,\,\tau \neq \ell, \,\, for \,\, all \,\,\tau=1,\ldots r ;\,\, \ell=1,\ldots, m.
+\end{align}
+\\ \\
+Duo to the incidental parameter problem in fixed effects panel VAR model, we take first difference in equation (\ref{1}) and (\ref{2})  to eliminate the individual effects. This linear difference approach can avoid incidental parameters problem. But linear difference method can not control the muti-factor error structure.  After taking first difference, the model can be expressed as
+\begin{align}
+\Delta \boldsymbol{z}_{i,t}=\boldsymbol{\Phi} \Delta \boldsymbol{z}_{i,t-1}+\boldsymbol{d}_{t}+\boldsymbol{\Gamma}_{i}\boldsymbol{g}_{t} +\Delta \boldsymbol{\varepsilon}_{i,t}, \,\, for \,\, t=2,\ldots, T;\,\,i=1,\ldots,N, \label{4}
+\end{align}
+where
+ $\boldsymbol{d}_{t}=\Delta \boldsymbol{h}_{t}$ and $\boldsymbol{g}_{t}=\Delta \boldsymbol{f}_{t}$.
+
+
+
+When $T$ is fixed and $N$ is large, how to treat initial value is important issue\footnote{\citet{HsiaoZhou:2018} shows that treating initial value as fixed constants, the QMLE is inconsistent in short $T$ dynamic panel data model. When treating initial value as a random variable, the QMLE is consistent when $N$ tend to infinity. }.
+It is reasonable to treat data generating process of $\boldsymbol{z}_{i,0}$  same as $\boldsymbol{z}_{i,t}$.
+Therefore,  we follow the process of initial value setting by \citet{Binder:2005}.
+ Thus,$\Delta \boldsymbol{z}_{i,1}$ can be expressed as
+\begin{align}
+\Delta \boldsymbol{z}_{i,1}=-(\boldsymbol{I}_{m}-\boldsymbol{\Phi})\boldsymbol{z}_{i,0} +\boldsymbol{h}_{1}+\boldsymbol{a}_{i}+\boldsymbol{\Gamma}_{i}\boldsymbol{f}_{1} + \boldsymbol{\varepsilon}_{i,1}, \label{6}
+\end{align}
+the process can start from an infinite period in the past or  a finite past.
+Therefore, we have
+\begin{align}
+\Delta \boldsymbol{z}_{i,1}\sim iid(\boldsymbol{0},\boldsymbol{\Psi}),
+\end{align}
+ where $Var\left(\Delta \boldsymbol{z}_{i,1} \right)$ can be denote as $\boldsymbol{\Psi}=\boldsymbol{\Sigma}^{-1}\boldsymbol{W} $, where $\boldsymbol{W}$ is an $m$ by $m$ free parameters matrix, $Cov\left(\Delta \boldsymbol{z}_{i,1},\Delta \boldsymbol{\varepsilon}_{i,2} \right)=-\boldsymbol{\Sigma}$ and $Cov \left(\Delta \boldsymbol{z}_{i,1},\Delta \boldsymbol{\varepsilon}_{i,t} \right)=\boldsymbol{0}$, for $t=3,4,\ldots,T$, $i=1,\ldots,N.$.
+
+
+Let $\Delta \boldsymbol{Z}_{i}=\left(\Delta \boldsymbol{z}_{i,1}^{'}, \Delta \boldsymbol{z}_{i,2}^{'},\ldots, \Delta \boldsymbol{z}_{i,T}^{'} \right)^{'}$ and $\Delta \boldsymbol{Z}_{i,-1}=\left((\boldsymbol{0}_{m})^{'}, \Delta \boldsymbol{z}_{i,1}^{'}, \Delta \boldsymbol{z}_{i,2}^{'},\ldots, \Delta \boldsymbol{z}_{i,T_1}^{'} \right)^{'}$. Then, the model can be expressed as
+\begin{align}
+\Delta \boldsymbol{Z}_{i}=\left(\boldsymbol{I}_{T}\otimes  \boldsymbol{\Phi} \right)\Delta \boldsymbol{Z}_{i,-1}+\boldsymbol{d}+\boldsymbol{\chi}_{i},
+\end{align}
+where
+$\boldsymbol{d}=\left(\boldsymbol{h}^{'}_{1}, \boldsymbol{d}^{'}_{2},\ldots, \boldsymbol{d}^{'}_{T} \right)^{'}$, $\boldsymbol{\chi}_{i}= \boldsymbol{G}^{\ast}  vec \left(\boldsymbol{\Gamma}_{i}\right)+\boldsymbol{e}_{i}$  and  $\boldsymbol{G}^{\ast}=\left(\boldsymbol{G} \otimes \boldsymbol{I}_{m} \right) $, and $\boldsymbol{G}=\left(\boldsymbol{f}_{1}, \boldsymbol{g}_{2},\ldots, \boldsymbol{g}_{T} \right)^{'}$, $\boldsymbol{e}_{i}=\left( \boldsymbol{\varepsilon}_{i,1}^{'}, \Delta \boldsymbol{\varepsilon}_{i,2}^{'},\ldots,\Delta \boldsymbol{\varepsilon}_{i,T}^{'} \right)^{'}$.
+Also, we can  define first difference matrix as
+\begin{align}
+\boldsymbol{R}(\boldsymbol{\Phi})=
+\begin{bmatrix}
+\boldsymbol{I}_{m} & \ldots             &\ldots & \boldsymbol{0} \\
+-\boldsymbol{\Phi} & \boldsymbol{I}_{m} &       &           \vdots     \\
+  \vdots        &       \ddots       &  \ddots &       \vdots       \\
+    \boldsymbol{0} &   \ldots &    -\boldsymbol{\Phi}    &  \boldsymbol{I}_{m}
+\end{bmatrix}.
+\end{align}
+
+The model can be rewrite as
+\begin{align}
+\boldsymbol{R\left( \Phi\right)} \Delta \boldsymbol{Z}_{i}=\boldsymbol{d}+\boldsymbol{\chi}_{i}. \label{7}
+\end{align}
+
+
+
+
+
+
+
+\section{Quasi maximum likelihood estimation}
+If the error term does not contain factor structure, using linear transformation can avoid incidental parameters problem in linear dynamic panel data model. The consistent estimator can obtain by using QML estimation method (\citet{Hsiao:2002}). However, if the error term contain factor structure, using linear transformation can not eliminate the factor structure.
+There are two main approaches on panel data models with a multifactor error structure in a large literatures. The first one is  Common Correlated Effects (CCE) approach, which is proposed by \citet{Pesaran:2006}, \citet{Kapetanios:2011}, \citet{Chudik:2011} and \citet{Chudik:2015}. The second method is principal components approach, which has been developed by \citet{Bai:2002}, \citet{Bai:2009} and \citet{Moon:2015}.
+Above literatures are focus on large panel data model, but there are less works focus on short T VAR model with multifactor error structure.
+\cite{Hayakawa:2018} provide the QML estimator in short T dynamic panel data with multifactor error structure.  In this study, we try to extend this univariable model to multivariable model.
+To multiply $\boldsymbol{R}^{-1}(\boldsymbol{\Phi})$ on both side of equation $\left(\ref{7} \right)$, we have
+\begin{align}
+\Delta \boldsymbol{z}_{i}=\boldsymbol{R}^{-1}(\boldsymbol{\Phi})\boldsymbol{d}+\boldsymbol{R} ^{-1}(\boldsymbol{\Phi})\boldsymbol{\chi}_{i} \label{9}
+\end{align}
+
+
+Thus, the quasi-log-likelihood function of the transformed model $(\ref{9})$ can be expressed as
+\begin{align}
+\ell_{N}\left(\boldsymbol{\theta}\right)&\propto \ell_{N}\left(  \boldsymbol{\varphi}, \boldsymbol{\psi} \right)\propto-\dfrac{N}{2}\log\vert  \boldsymbol{\Sigma_{R \chi}}\vert-\dfrac{1}{2}\sum^{N}_{i=1}\left( \boldsymbol{R}^{-1}(\boldsymbol{\Phi})\boldsymbol{\chi}_{i}\right)^{'}\boldsymbol{\Sigma}_{R \chi}^{-1}\left( \boldsymbol{R}^{-1}(\boldsymbol{\Phi}) \boldsymbol{\chi}_{i}\right), \label{10}
+\end{align}
+where  $\boldsymbol{\varphi}=\left(\boldsymbol{d}^{'} ,Vec(\boldsymbol{\Phi})^{'}\right)^{'}$ and $ \boldsymbol{\psi}=\left(Vech(\boldsymbol{\Sigma})^{'}, Vech(\boldsymbol{\Psi})^{'} \right)^{'}.$ The dimension of our interesting unknown parameters $\boldsymbol{\theta}=\left(\boldsymbol{\varphi}^{'}, \boldsymbol{\psi}^{'} \right)^{'}$ are $\left( Tm+m^{2}+m(m+1) \right) \times 1$.
+
+From equation $(\ref{10})$, we define the variance of $\boldsymbol{\Delta z_{i}}$ as
+\begin{align}
+\boldsymbol{\Sigma}_{R\chi}=Var(\Delta \boldsymbol{z}_{i})=E\left(\left( \boldsymbol{R}^{-1}(\boldsymbol{\Phi}) \boldsymbol{\chi}_{i}\right)\left( \boldsymbol{R}^{-1}(\boldsymbol{\Phi})\boldsymbol{\chi}_{i}\right)^{'}\right)=\boldsymbol{R}^{-1}(\boldsymbol{\Phi}) \boldsymbol{\Sigma}_{\chi}(\boldsymbol{\phi}) \boldsymbol{R}^{'-1}(\boldsymbol{\Phi}),
+\end{align}
+where
+\begin{align}
+\begin{split}
+\boldsymbol{\Sigma}_{\chi}(\boldsymbol{\phi})&= \boldsymbol{G^{\ast}} \boldsymbol{\Sigma}_{\Gamma}\boldsymbol{G}^{\ast '}+\boldsymbol{\Sigma_{e}}, \\
+&= \boldsymbol{QQ}^{'}+\boldsymbol{\Sigma}_{e}, \label{11}
+\end{split}
+\end{align}
+ and$\boldsymbol{Q}=  \boldsymbol{G}^{\ast}\boldsymbol{\Sigma_{\Gamma}}^{\text{\textonehalf}}$, and $ \boldsymbol{\phi}=\left( Vech(\boldsymbol{\Psi})^{'}, Vech(\boldsymbol{\Sigma})^{'}, Vec(\boldsymbol{Q})^{'}   \right)^{'}$
+,and
+\begin{align}
+\boldsymbol{\Sigma}_{e}&=E\left(\boldsymbol{e}_{i}\boldsymbol{e}_{i}^{'} \right)=
+\begin{bmatrix}
+\boldsymbol{W} &-\boldsymbol{\Sigma} & &0 \\
+-\boldsymbol{\Sigma} & 2\boldsymbol{\Sigma}&  & 0 \\
+\vdots&                  &  \ddots                 &\vdots \\
+0  &                           &          -\boldsymbol{\Sigma}& 2\boldsymbol{\Sigma}
+\end{bmatrix}
+\end{align}
+\begin{align}
+=\left(\boldsymbol{I}_{T}\otimes \boldsymbol{\Sigma} \right)
+\begin{bmatrix}
+\boldsymbol{\Psi} &-\boldsymbol{I}_{m} & &0 \\
+-\boldsymbol{I}_{m} & 2\boldsymbol{I}_{m}&  & 0 \\
+\vdots&                  &  \ddots                 &\vdots \\
+0  &                           &          -\boldsymbol{I}_{m}& 2\boldsymbol{I}_{m}
+\end{bmatrix}
+=\left(\boldsymbol{I}_{T}\otimes \boldsymbol{\Sigma} \right) \boldsymbol{\Omega},
+\end{align}
+
+We also know the determinant of  $\boldsymbol{\Sigma}_{R \chi}$ as
+\begin{align}
+\begin{split}
+\vert\boldsymbol{\Sigma}_{R \chi}\vert &=\vert \boldsymbol{R}^{-1}(\boldsymbol{\Phi}) \left(\boldsymbol{\Sigma}_{\chi} \right)\boldsymbol{R}^{' -1}(\boldsymbol{\Phi})    \vert  \\
+&=\vert \boldsymbol{R}^{-1}(\boldsymbol{\Phi}) (\boldsymbol{G}^{\ast} \boldsymbol{\Sigma_{\Gamma}} \boldsymbol{G}^{\ast'}+\boldsymbol{\Sigma_{e}} )\boldsymbol{R}^{' -1}  (\boldsymbol{\Phi})  \vert \\
+&=\vert \boldsymbol{R}^{-1}(\boldsymbol{\Phi}) \vert \vert \boldsymbol{G}^{\ast} \boldsymbol{\Sigma}_{\Gamma} \boldsymbol{G}^{\ast'}+\boldsymbol{\Sigma}_{e}  \vert  \vert  \boldsymbol{R}^{' -1}(\boldsymbol{\Phi})  \vert \\
+&=\vert \boldsymbol{R}(\boldsymbol{\Phi}) \vert^{-1} \vert  \boldsymbol{G}^{\ast} \boldsymbol{\Sigma}_{\Gamma}\boldsymbol{G}^{\ast'}+\boldsymbol{\Sigma}_{e}  \vert  \vert  \boldsymbol{R}^{'}(\boldsymbol{\Phi})  \vert^{-1} \\
+&= \vert \boldsymbol{G}^{\ast} \boldsymbol{\Sigma}_{\Gamma} \boldsymbol{G}^{\ast'}+\boldsymbol{\Sigma}_{e} \vert\\
+&=\vert \boldsymbol{Q}\boldsymbol{Q}^{'} +\boldsymbol{\Sigma}_{e} \vert ,
+\end{split}
+\end{align}
+ where $ \vert \boldsymbol{R}^{-1}(\boldsymbol{\Phi}) \vert=\vert \boldsymbol{R}(\boldsymbol{\Phi}) \vert^{-1}=1.$
+
+
+Then, the quasi-log-likelihood function $(\ref{10})$ can be rewritten as
+\begin{align}
+\begin{split}
+\ell_{N}\left(\boldsymbol{\theta}\right)&\propto -\dfrac{N}{2} \log \vert \boldsymbol{\Sigma}_{e}+\boldsymbol{QQ}^{'}     \vert -\dfrac{1}{2}\sum^{N}_{i=1}  (\boldsymbol{R}^{-1}(\boldsymbol{\Phi}) \boldsymbol{\chi}_{i})^{'} (\boldsymbol{R}^{-1}(\boldsymbol{\Phi})\boldsymbol{\Sigma}_{\chi} \boldsymbol{R}^{'-1}(\boldsymbol{\Phi}))^{-1}    ( \boldsymbol{R}^{-1}(\boldsymbol{\Phi})\boldsymbol{\chi}_{i} ) \\
+&= -\dfrac{N}{2} \log\vert \boldsymbol{\Sigma}_{e}+\boldsymbol{QQ}^{'}     \vert -\dfrac{1}{2}\sum^{N}_{i=1} \boldsymbol{\chi}^{'}_{i} \left( \boldsymbol{\Sigma}_{\chi}  \right)^{-1}      \boldsymbol{\chi}_{i}.  \label{13}
+\end{split}
+\end{align}
+
+
+Follow the method from \citet{Hayakawa:2018}, $\boldsymbol{QQ}^{'} $ is rank deficient, $rank(\boldsymbol{QQ}^{'})=rm<Tm$, and $\boldsymbol{\Omega}$ is positive definite.  We decompose
+
+\begin{align}
+ \vert \boldsymbol{\Sigma}_{e}+\boldsymbol{Q}\boldsymbol{Q}^{'}  \vert &=   \vert \boldsymbol{\Sigma}_{e} \vert \vert \boldsymbol{I}_{rm}+\boldsymbol{Q}^{'}\boldsymbol{\Sigma}_{e}^{-1}\boldsymbol{Q} \vert  \label{17}
+\end{align}
+
+ Thus,  equation  (\ref{17}) can be rewritten as
+\begin{align}
+ \vert \boldsymbol{\Sigma}_{e}+\boldsymbol{Q}\boldsymbol{Q}^{'}  \vert =   \vert \boldsymbol{\Sigma}_{e}  \vert \vert \boldsymbol{A} \vert, \label{18}
+\end{align}
+where a non-singular matrix $\boldsymbol{A}=\boldsymbol{I}_{rm}+\boldsymbol{Q}^{'}\boldsymbol{\Sigma}_{e}^{-1}\boldsymbol{Q}$.
+ By Woodbury matrix identity, we have
+
+\begin{align}
+\begin{split}
+\left(\boldsymbol{\Sigma}_{\chi}\right)^{-1}&=\left(  \boldsymbol{\Sigma}_{e}+\boldsymbol{Q}\boldsymbol{Q}^{'} \right)^{-1} \\
+&= \boldsymbol{\Sigma}_{e}^{-1}-\boldsymbol{\Sigma}_{e}^{-1}\boldsymbol{Q}\left( \boldsymbol{I}_{rm}+\boldsymbol{Q}^{'}\boldsymbol{\Sigma}_{e}^{-1}\boldsymbol{Q}  \right)^{-1}\boldsymbol{Q}^{'}\boldsymbol{\Sigma}_{e}^{-1} \\
+&= \boldsymbol{\Sigma}_{e}^{-1}-\boldsymbol{\Sigma}_{e}^{-1}\boldsymbol{Q}\boldsymbol{A}^{-1}\boldsymbol{Q}^{'}\boldsymbol{\Sigma}_{e}^{-1}
+\end{split}
+\end{align}
+
+
+
+
+from $(\ref{18})$, $\vert \boldsymbol{\Sigma}_{e}   \vert$ can decompose as
+\begin{align}
+\begin{split}
+\vert \boldsymbol{\Sigma}_{e}   \vert&= \vert \boldsymbol{I}_{m}\otimes \boldsymbol{\Sigma}  \vert \vert  \boldsymbol{I}_{m}+\left( \boldsymbol{e}^{'}_{1}\boldsymbol{L}^{'}_{T}\boldsymbol{L}_{T}\boldsymbol{e}_{1}(\boldsymbol{\Psi}-\boldsymbol{I}_{m}) \right) \vert \vert \left(\boldsymbol{L}^{'}_{T}\boldsymbol{L}_{T}  \right)^{-1}   \vert \\
+&=\vert \boldsymbol{\Sigma}  \vert^{T}\vert  \boldsymbol{I}_{m}+\left( \boldsymbol{e}^{'}_{1}\boldsymbol{L}^{'}_{T}\boldsymbol{L}_{T}\boldsymbol{e}_{1}(\boldsymbol{\Psi}-\boldsymbol{I}_{m}) \right)  \vert  \\
+&=\vert \boldsymbol{\Sigma}  \vert^{T}  \vert \boldsymbol{I}_{m}+T(\boldsymbol{\Psi}-\boldsymbol{I}_{m})     \vert,
+\end{split}
+\end{align}
+where $\boldsymbol{e}^{'}_{1}=(1,1,\ldots, 1)$ is $1$ by $T$ vector and
+\begin{align}
+\boldsymbol{L}_{T}=
+\begin{bmatrix}
+1 & 0 & \cdots  & 0 \\
+1 & 1 & \ddots &  \vdots \\
+ \vdots & \ddots  & \ddots & 0  \\
+1 & \cdots  & 1 &1
+\end{bmatrix}.
+\end{align}
+And also by the Woodbury matrix identity and \citet{Juodis:2017}, $\boldsymbol{\Sigma}^{-1}_{e}$ can be expressed as
+\begin{align}
+\begin{split}
+\boldsymbol{\Sigma}^{-1}_{e} &=\left[ \left( \left( \boldsymbol{L}^{'}_{T}\boldsymbol{L}_{T}   \right)^{-1} \otimes \boldsymbol{I}_{m} \right)+\left(  \boldsymbol{e}_{1}\boldsymbol{e}^{'}_{1} \otimes (\boldsymbol{\Psi}-\boldsymbol{I}_{m}) \right)    \right]^{-1} \left( \boldsymbol{I}_{T}\otimes \boldsymbol{\Sigma}^{-1}  \right) \\
+&=\left( (\boldsymbol{L}^{'}_{T}\boldsymbol{L}_{T} )\otimes \boldsymbol{I}_{m}   \right)- \left( (\boldsymbol{L}^{'}_{T}\boldsymbol{L}_{T}\boldsymbol{e}_{1} )\otimes \boldsymbol{I}_{m}  \right) \left( (\boldsymbol{\Psi}-\boldsymbol{I}_{m} )^{-1}+T \boldsymbol{I}_{m}  \right)\times \\
+&\times \left( (\boldsymbol{e}^{'}_{1}\boldsymbol{L}^{'}_{T}\boldsymbol{L}_{T} )\otimes \boldsymbol{I}_{m}  \right) \left( \boldsymbol{I}_{T} \otimes \boldsymbol{\Sigma}^{-1} \right)
+\left(\boldsymbol{L}^{'}_{T} \otimes \boldsymbol{I}_{m}  \right) \\
+& \times \left(\boldsymbol{I}_{Tm}- \left((\boldsymbol{L}_{T}\boldsymbol{e}_{1})\otimes \boldsymbol{I}_{m}\right) \right) \left( (\boldsymbol{\psi}-\boldsymbol{I}_{m})\left(T\boldsymbol{\Sigma}^{-1}(\boldsymbol{W}-\boldsymbol{\Sigma}+\boldsymbol{I}_{m} )^{-1}  \right) \left( (\boldsymbol{e}^{'}_{1} \boldsymbol{C}^{'}_{T} )\otimes \boldsymbol{I}_{m}  \right)   \right)    \\
+ &\times \left( \boldsymbol{L}_{T}\otimes \boldsymbol{I}_{m}  \right) \left( \boldsymbol{I}_{T}\otimes \boldsymbol{\Sigma}^{-1} \right)
+\end{split}
+\end{align}
+
+
+
+Using the above results, the quasi-log-likelihood function can be rewritten as
+\begin{align}
+\ell_{N} ( \boldsymbol{\theta})\propto  -\dfrac{N}{2}\log\vert \boldsymbol{\Sigma}_{e} \vert-\dfrac{N}{2} log\vert \boldsymbol{A} \vert-
+\dfrac{N}{2} \left[Tr\left(\boldsymbol{C}_{N}(\boldsymbol{\varphi})\boldsymbol{\Sigma}_{e}^{-1}\right)- Tr \left( \boldsymbol{C}_{N}(\boldsymbol{\varphi})\boldsymbol{\Sigma}_{e}^{-1}\boldsymbol{Q}\boldsymbol{A}^{-1}\boldsymbol{Q}^{'}\boldsymbol{\Sigma}_{e}^{-1} \right)   \right], \label{21}
+\end{align}
+where $\boldsymbol{C}_{N}(\boldsymbol{\varphi})=\dfrac{1}{N}\sum^{N}_{i=1}\left( \boldsymbol{\chi}_{i}\boldsymbol{\chi}^{'}_{i}\right)$.
+
+ We define $\boldsymbol{P}=\boldsymbol{\Sigma}_{e}^{-\text{\textonehalf}}\boldsymbol{Q}\boldsymbol{A}^{-\text{\textonehalf}}$ and we know $rank\left( \boldsymbol{P}\right)=rm$. We can see that
+\begin{align}
+\boldsymbol{I}_{rm}-\boldsymbol{P}^{'}\boldsymbol{P}=\boldsymbol{I}_{rm}-\boldsymbol{A}^{-\text{\textonehalf}}\boldsymbol{Q}^{'}\boldsymbol{\Sigma}_{e}^{-1}\boldsymbol{Q}\boldsymbol{A}^{-\text{\textonehalf}},
+\end{align}
+From equation ($\ref{18}$), we know
+\begin{align}
+\boldsymbol{Q}^{'}\boldsymbol{\Sigma}_{e}^{-1}\boldsymbol{Q}=\boldsymbol{A}-\boldsymbol{I}_{rm}.
+\end{align}
+ Thus, we can rewrite
+\begin{align}
+\begin{split}
+\boldsymbol{I}_{rm}-\boldsymbol{P}^{'}\boldsymbol{P}&=\boldsymbol{I}_{rm}-\boldsymbol{A}^{-\text{\textonehalf}}\left( \boldsymbol{A}-\boldsymbol{I}_{rm}  \right)\boldsymbol{A}^{-\text{\textonehalf}} \\
+&=\boldsymbol{I}_{rm}-\boldsymbol{I}_{rm}+\boldsymbol{A}^{ -1}.
+\end{split}
+\end{align}
+Therefore, from above equation we can obtain
+\begin{align}
+\boldsymbol{A}^{-1}=\boldsymbol{I}_{rm}-\boldsymbol{P}^{'}\boldsymbol{P}.
+\end{align}
+
+And from quasi-log-likelihood function ($\ref{21}$), we know
+\begin{align}
+Tr\left(\boldsymbol{C}_{N}(\boldsymbol{\varphi})\boldsymbol{\Sigma}_{e}^{-1}\right)= Tr\left( \boldsymbol{\Sigma}^{-\text{\textonehalf}}_{e}\boldsymbol{C}_{N}(\boldsymbol{\varphi})\boldsymbol{\Sigma}^{-\text{\textonehalf}}_{e}  \right) =Tr\left(\boldsymbol{ D}_{N}(\boldsymbol{\theta}) \right),
+\end{align}
+where we denote
+\begin{align}
+\boldsymbol{D}_{N}\left( \boldsymbol{\theta}\right)= \boldsymbol{\Sigma}^{-\text{\textonehalf}}_{e}\boldsymbol{C}_{N}(\boldsymbol{\varphi})\boldsymbol{\Sigma}^{-\text{\textonehalf}}_{e}.
+\end{align}
+
+And, from quasi-log-likelihood function ($\ref{21}$), we have
+
+\begin{align}
+Tr\left(\boldsymbol{C}_{N}(\boldsymbol{\varphi})\boldsymbol{\Sigma}_{e}^{-1}\boldsymbol{Q}\boldsymbol{A}^{-1}\boldsymbol{Q}^{'}\boldsymbol{\Sigma}_{e}^{-1}  \right)=Tr \left(\boldsymbol{P}^{'}\boldsymbol{D}_{N}(\boldsymbol{\theta})\boldsymbol{P} \right).
+\end{align}
+
+From above results, the quasi-log-likelihood function can be written as
+\begin{align}
+\ell_{N} ( \boldsymbol{\theta}) \propto-\dfrac{N}{2}\log \vert\boldsymbol{\Sigma}_{e} \vert + \dfrac{N}{2} log \vert \boldsymbol{I}_{rm}-\boldsymbol{P}^{'}\boldsymbol{P}\vert-\dfrac{N}{2}\left[Tr\left( \boldsymbol{D}_{N}(\boldsymbol{\theta}) \right)-Tr \left( \boldsymbol{P}^{'}\boldsymbol{D}_{N}(\boldsymbol{\theta})\boldsymbol{P} \right)  \right].
+\end{align}
+Here, the different transformation for $\boldsymbol{P}$ give us the same consequences, which means we cannot identified $\boldsymbol{P}$ without setting orthonormal constrains.
+Impose $\dfrac{r\left(r-1\right)}{2}$ orthogonality condition
+\begin{align}
+\boldsymbol{p}_{t}^{'}\boldsymbol{p}_{s}=0, \,\,for \,\, all \,\,  s \neq t=1,2,\ldots,r.
+\end{align}
+By these restrictions, the quasi likelihood function can be expressed as
+\begin{align}
+\begin{split}
+\ell_{N} ( \boldsymbol{\theta}) \propto - \dfrac{N}{2} log \vert \boldsymbol{\Sigma}_{e}  \vert+\dfrac{N}{2} \sum^{r}_{t=1}log\left( 1-\boldsymbol{p}^{'}_{t}\boldsymbol{p}_{t} \right)
++\dfrac{N}{2} \sum^{r}_{t=1}\boldsymbol{p}^{'}_{t}\boldsymbol{D}_{N}(\boldsymbol{\theta})\boldsymbol{p}_{t}-\dfrac{N}{2}Tr\left( \boldsymbol{D}_{N}(\boldsymbol{\theta})\right)
+\end{split}
+\end{align}
+
+By first derivatives with respect to $\boldsymbol{p}_{t}$ and setting this to zero, yield
+\begin{align}
+\boldsymbol{D}_{N}(\boldsymbol{\theta})\boldsymbol{\hat{\boldsymbol{p}}}_{t}= \left( \dfrac{1}{1-\hat{\boldsymbol{p}}^{'}_{t}\hat{\boldsymbol{p}_{t}}}   \right) \hat{\boldsymbol{p}}_{t}, for\,\, t=1,2,\ldots,r,
+\end{align}
+where $\hat{\boldsymbol{p}}_{t}$ is quasi-maximum likelihood estimator of $\boldsymbol{p}_{t}$. Then, $\boldsymbol{\hat{\boldsymbol{p}}}_{t}$ is the eigenvector of $\boldsymbol{D}_{N}(\boldsymbol{\theta})$ and associated with the first $rm$ largest eigenvalue of $\boldsymbol{D}_{N}(\boldsymbol{\theta})$.
+We denote the eigenvalues is $\lambda_{t}(\boldsymbol{\theta})$ and $\lambda_{t}(\boldsymbol{\theta})$ is
+\begin{align}
+\lambda_{t}(\boldsymbol{\theta})= \dfrac{1}{1-\hat{\boldsymbol{p}}^{'}_{t}\hat{\boldsymbol{p}_{t}}} .
+\end{align}
+
+Thus, the concentrated quasi-log-likelihood function can be expressed as
+\begin{align}
+\ell_{N} ( \boldsymbol{\theta})\propto -\dfrac{N}{2}log \vert \boldsymbol{\Sigma}_{e}   \vert-\dfrac{N}{2}\sum^{r}_{t=1}log \left( \lambda_{t}(\boldsymbol{\theta}) \right) +\dfrac{N}{2} \sum_{t=1}^{r}\left(\lambda_{t}(\boldsymbol{\theta})-1  \right)-\dfrac{N}{2}\sum_{t=1}^{T} \left( \lambda_{t}(\boldsymbol{\theta}) \right) \label{29}
+\end{align}
+
+
+
+
+
+
+
+From the equation $(\ref{9})$, we know $\boldsymbol{R}^{-1}\boldsymbol{d}$ is unrestricted. Even we know $\boldsymbol{R\left(\Phi\right)}^{-1}\boldsymbol{d}$, we cannot identified $\Phi$. Thus, we can only identified $\boldsymbol{\Phi}$ from $Var(\Delta \boldsymbol{Z}_{i})$, which is expressed in equation $(\ref{11})$. And from equation  $(\ref{17})$, because $Var(\Delta \boldsymbol{Z}_{i})$ include $\boldsymbol{QQ^{'}}$, we need to consider different rank conditions for unknown matrix $\boldsymbol{QQ}^{'}$. Firstly, we need to restrict $rank\left( \boldsymbol{QQ}^{'}\right)=\gamma m < Tm$. The order condition for identification is
+\begin{align}
+Tm(Tm+m)/2>(m^{2}+m(m+1))+T\gamma m^{2}-m \gamma(m \gamma-1)/2
+\end{align}
+
+
+
+\section{Identification conditions}
+In this section, we derive the the necessary and sufficient condition for identification of the interests parameters.  First, We consider the average log-likelihood function from equation (\ref{13}) as below,
+\begin{align}
+\begin{split}
+\bar{\ell}_{N}\left(\boldsymbol{\theta}\right)&=N^{-1} \ell_{N}(\boldsymbol{\varphi}, \boldsymbol{\theta})= \\
+&-\frac{T}{2}log(2 \pi)-\frac{1}{2}log \vert \boldsymbol{\Sigma}_{\chi}(\boldsymbol{\phi}) \vert-\frac{1}{2N}\sum^{N}_{i=1} \boldsymbol{\chi}^{'}_{i}(\boldsymbol{\varphi})\boldsymbol{\Sigma}_{\chi}(\boldsymbol{\phi})^{-1}\boldsymbol{\chi}_{i}(\boldsymbol{\varphi}), \label{40}
+\end{split}
+\end{align}
+where $\boldsymbol{\theta}=(\boldsymbol{\varphi})^{'}, \boldsymbol{\phi}^{'})^{'}$, $\boldsymbol{\varphi}=(\boldsymbol{d}^{'}, vec(\boldsymbol{\Phi})^{'})^{'}$ and $\boldsymbol{\phi}=(vech(\boldsymbol{\Psi})^{'}, vech(\boldsymbol{\Sigma})^{'},vec(\boldsymbol{q})^{'})^{'}$.
+$\boldsymbol{q}$ is the $(Trm^{2}-\frac{rm(rm-1)}{2}) \times 1$ vector contains the non-reduntant of $\boldsymbol{Q}$. Assume $\boldsymbol{d}\in \Theta_{d}$, $\boldsymbol{\Phi} \in \Theta_{\Phi}$ and $\boldsymbol{\phi} \in \Theta_{\phi}$. And we also define the true value of $\boldsymbol{d}, \boldsymbol{\Phi}$ and $\boldsymbol{\omega}$ by $\boldsymbol{d}_{0}, \boldsymbol{\Phi}_{0}$ and $\boldsymbol{\omega}_{0}.$
+Then, we consider the set $M_{\epsilon}(\Phi_{0})$ and we have a definition as follow:
+
+$\boldsymbol{Definition 1}$ Let the set $M_{\epsilon}(\Phi_{0})$ in the closed neighbourhood of $\boldsymbol{\Phi}_{0}$ defined by
+$M_{\epsilon}(\boldsymbol{\Phi}_{0})=\left(\boldsymbol{\Phi}\in \Theta_{\Phi}, b_{lj}\leq \epsilon  \right)$, for some small $\epsilon > 0$, where $ b_{lj}=\vert \Phi_{lj}-\Phi_{0lj}  \vert $ and $\Theta_{\Phi}$ is a compact subset of $\mathbb{R}^{n_{\Phi}}$.
+
+According to $\boldsymbol{Definition 1}$, we can show that $\boldsymbol{\theta}_{0}=(\boldsymbol{\varphi}^{'}_{0}, \boldsymbol{\phi}^{'}_{0})^{'}=(\boldsymbol{d}^{'}_{0}, vec(\boldsymbol{\Phi}_{0})^{'}, vec(\boldsymbol{\phi}_{0})^{'}  )^{'}$, where $\boldsymbol{d}$ is identified on $\Theta_{\epsilon}=M_{\epsilon}(\boldsymbol{\Phi}_{0})\times \Theta_{d}\times \Theta_{\phi}$. Here, we have following assumption.
+
+$\boldsymbol{Assumption 6} (1)$ $\boldsymbol{\theta} \in \Theta_{\epsilon}=M_{\epsilon}(\Phi_{0}) \times \Theta_{d} \times \Theta_{\phi}$, where $\Theta_{\phi}=\Theta_{\Psi} \times \Theta_{\Sigma} \times \Theta_{q}, \Theta_{d}$ and $\Theta_{q}$ are compact subset of $\mathbb{R}^{n_{d}}$ and $\mathbb{R}_{n_{q}}$; $\Theta_{\Psi}$ and $\Theta_{\Sigma}$ are compact subset of $\mathbb{R}^{n_{\Psi}}$ and $\mathbb{R}^{n_{\Sigma}} $ where $n_{d}=Tm$, $n_{q}=Trm^{2}-rm(rm-1)/2$; $\boldsymbol{\theta}_{0}=(\boldsymbol{\varphi}^{'}_{0}, \boldsymbol{\theta}^{'}_{0})^{'}=(\boldsymbol{d}^{'}_{0}, vec(\boldsymbol{\Phi}_{0})^{'}, \boldsymbol{\phi}^{'}_{0} )^{'}  $ lie in the interior of $\Theta_{\epsilon}$. (2) $\boldsymbol{\Sigma}_{\chi}=\boldsymbol{\Sigma}_{e}+\boldsymbol{QQ}^{'}$, and for some $\tau_{max}> \tau_{min}>0$, $\tau_{min}  \leq inf_{\phi \in \Theta_{\phi}}\lambda_{min} \vert \boldsymbol{\Sigma}_{\chi}(\phi) \vert< sup_{\phi \in \Theta_{\phi}} \lambda_{max} \vert \boldsymbol{\Sigma}_{\chi}(\phi) \vert \leq \tau_{max}$.
+(3) When $N \longrightarrow \infty$
+\begin{align}
+\boldsymbol{A}_{N}(\boldsymbol{\psi})=\frac{1}{N}\sum^{N}_{i=1} \Delta \boldsymbol{W}^{'}_{i}\boldsymbol{\Sigma}_{\chi}(\boldsymbol{\phi})^{-1} \Delta \boldsymbol{W}_{i}\overset{a.s}{\to} \boldsymbol{A}(\boldsymbol{\phi}) \,\, uniformly \,\, in \,\, \boldsymbol{\Theta}_{\phi},
+\end{align}
+where $\boldsymbol{A}(\boldsymbol{\phi})=\lim_{N\to\infty} N^{-1} \sum^{N}_{i=1}E(\Delta \boldsymbol{W}^{'}_{i}\boldsymbol{\Sigma}_{\chi}(\boldsymbol{\phi})^{-1} \Delta \boldsymbol{W}_{i} )$ is positive define for all value of $\boldsymbol{\phi} \in \Theta_{\phi}$ and $\Delta \boldsymbol{W}_{i}=(\boldsymbol{I}_{Tm}, \Delta \boldsymbol{z}_{i,-1})$.
+
+$\boldsymbol{Assumption 6} (1)$ exclude the parameters value on the boundary. And we  also know $\Theta_{\epsilon} \in \mathbb{R}^{n_{\theta}},$ where $n_{\theta}=(m^{2}+m(m+1))+Trm^{2}-rm(rm-1)/2$. Also the order condition should be setting.  $\boldsymbol{Assumption 6} (2)$ is the eigenvalue conditions on $\Sigma_{\chi}(\boldsymbol{\phi})$ that is for the proof of consistent. In $\boldsymbol{Assumption 6} (3)$,
+we note
+\begin{align}
+sup_{i} E\Vert \Delta \boldsymbol{W}^{'}_{i}\boldsymbol{\Sigma}_{\chi}(\boldsymbol{\phi})^{-1}\Delta \boldsymbol{W}_{i} \Vert^{2} < \Vert \boldsymbol{\Sigma}_{\chi}(\boldsymbol{\phi})^{-1} \Vert^{2}sup_{i}E \Vert \Delta \boldsymbol{W}_{i}  \Vert^{4}< K,
+\end{align}
+where $ \Vert \boldsymbol{\Sigma}_{\chi}(\boldsymbol{\phi})^{-1} \Vert<K$ under $\boldsymbol{Assumption 6} (2)$, and $sup_{i} E \Vert \Delta \boldsymbol{W}_{i}  \Vert^{4}<K $. We can note that positive definite matrix of $\boldsymbol{A}(\boldsymbol{\phi})$ is needed for identification of $\boldsymbol{\phi}$.
+
+
+
+
+
+
+\section{Asymptotic properties of the estimator}
+
+To show the consistentency and asymptotic normality of the  QML estimator ,
+The following following conditions are met :  \\
+(1) $\boldsymbol{\Theta}_{\epsilon}$ is a compact subset of $\boldsymbol{\Theta}$. \\
+(2)   $C_{N}(\boldsymbol{\theta})\overset{pr}{\to} \bar{C}_{N}(\boldsymbol{\theta})(a non-stochastic functiion of \boldsymbol{\theta} )$ uniformly on $\boldsymbol{\Theta}$ \\
+(3)$\boldsymbol{\theta}_{0}\in int(\boldsymbol{\Theta})$ is the unique minimum of $\bar{C}_{N}(\boldsymbol{\theta}$. Above three conditions are satisfied. Therefore, we can proof that $plim\boldsymbol{\hat{\theta}}_{N}=\boldsymbol{\theta}_{0}$ on the $\boldsymbol{\Theta}_{\epsilon}$. \\
+
+
+If we can confirm that the maximizes $\bar{\ell_{N}}(\boldsymbol{\theta})$ on $\boldsymbol{\Theta}_{\epsilon}$ is $\boldsymbol{\hat{\theta}}$ by taking a Taylor expansion of $\frac{\partial\bar{\ell}_{N}\left(\boldsymbol{ \hat{\theta}} \right)}{\partial \theta}=0$. Then, we need to check the behaviour of the score function $\boldsymbol{\bar{Sc}_{N}(\theta)}=\frac{\partial\bar{\ell}_{N}\left(\boldsymbol{ \hat{\theta}} \right)}{\partial \theta}$ and Hessian matrix, $\boldsymbol{H}_{N}(\boldsymbol{\theta})=-\frac{\partial^{2}\bar{\ell}_{N}\left(\boldsymbol{ \hat{\theta}} \right)}{\partial \boldsymbol{\theta}\partial \boldsymbol{\theta}^{'}}$ at $\boldsymbol{\theta}_{0}$. We also define Hessian matrix is  $H_{N}\left( \boldsymbol{\hat{\theta}}\right)=\frac{\partial^{2}\bar{\ell}_{N}\left(\boldsymbol{ \hat{\theta}} \right)}{\partial \theta \theta^{'}}$.
+We can confirm that $E_{0}\left[ \frac{\bar{\ell}_{N}(\boldsymbol{\theta}_{0})}{\partial \boldsymbol{\theta}}  \right]=0$ and the Hessian matrix, $H_{N}\left( \boldsymbol{\check{\theta}}\right) \overset{a.s.}{\to} H_{N}\left( \boldsymbol{\theta}_{0}\right)$.
+ Therefore, by using the mean value theorem, we have
+\begin{align}
+\sqrt[]{N}\bar{s}_{N}\left( \hat{\boldsymbol{\theta}} \right)=\sqrt[]{N}\bar{s}_{N}\left( \boldsymbol{\theta}_{0}\right)-H_{N} ( \boldsymbol{\check{\theta}} )\sqrt[]{N} ( \boldsymbol{\hat{\theta}}-\boldsymbol{\theta}_{0} ),
+\end{align}
+where $\boldsymbol{\check{\theta}}$ lie between $\boldsymbol{\hat{\theta}}$ and $\boldsymbol{\theta}_{0}$
+
+Follow from \citep{Hayakawa:2018}, we also have following results.
+Assume above assumptions and order conditions are met, and the QML estimator $\boldsymbol{\hat{\theta}}$ is almost surely locally consistent on $\boldsymbol{\Theta}_{\epsilon}$ for the VAR coefficient $\boldsymbol{\Phi}$ sufficiently close to $\boldsymbol{\Phi}_{0}$. Then, we have following asymptotic property,
+\begin{align}
+\sqrt[]{N}\left( \boldsymbol{\hat{\theta}-\theta_{0}} \right)\rightarrow N\left(\boldsymbol{0, H^{-1}(\theta_{0})}\boldsymbol{B(\theta_{0})} \boldsymbol{H^{-1}(\theta_{0})} \right),
+\end{align}
+where $\boldsymbol{B(\theta_{0})}=\lim_{N \rightarrow \infty} E (N\frac{\partial\bar{\ell}_{N}\left(\boldsymbol{ \hat{\theta}} \right)}{\partial \theta}\frac{\partial\bar{\ell}_{N}\left(\boldsymbol{ \hat{\theta}} \right)}{\partial \theta^{'}})$ and $\boldsymbol{H}(\boldsymbol{\theta}_{0})=\lim_{N \rightarrow \infty}E(\frac{\partial^{2}\bar{\ell}_{N}\left(\boldsymbol{ \theta}_{0} \right)}{\partial \theta \theta^{'}})$
+
+
+\section{Unit roots and cointegration test in Panel VAR}
+In this study, we focus on short T panel VAR with interactive effect, but it is not mean that data are stationary or not cointegrated. When variables are I(1), the asymptotic theory is different from the stable case. And it is well known that there are many variables are not stable in the real word.
+ Therefore, there is naturally to build the unit root test and cointeration test.
+Here, we consider $r=2$,  the equation
+ Follow  \citet{Binder:2005}, the model can be estimated is
+\begin{align}
+\boldsymbol{z}_{i,t}=\boldsymbol{\Phi z}_{i,t-1}+\boldsymbol{\alpha}_{i}+\boldsymbol{h}_{t}+\boldsymbol{\xi}_{i,t},  for \,\, t=1,\ldots, T;\,\,i=1,\ldots,N,
+\end{align}
+where $\boldsymbol{\xi}_{i,t}=\boldsymbol{\Gamma}_{i}\boldsymbol{f}_{t}$
+
+Thus, the unit root test hypothesis
+ for $\boldsymbol{\Phi}_{m,l}$ as
+ \begin{align}
+H_{0}:\Phi_{1,1}=1\,\, versus\,\,H_{1}:\Phi<1
+\end{align}
+The Wald-type statistic of testing $H_{0}$ versus $H_{1}$ will be
+
+\begin{align}
+t=\frac{\hat{\boldsymbol{\Phi}}_{1,1}-1}{se(\hat{\boldsymbol{\Phi}}_{1,1})},
+\end{align}
+where $se(\hat{\boldsymbol{\Phi}}_{1,1})$ is the standard error of $\hat{\boldsymbol{\Phi}}_{1,1}$.
+When $N$ and $T$ are large, \citet{Pesaran:2013} provide a panel unit root test with multifactor error structure.
+For $N$ is large and $T$ is small, \citet{Harris:1999} provided the short T panel unit root test but this test requires bias correction and do not consider error term cross sectional dependence.
+
+If there is a linear combination of nonstationary variables, it is naturally to test for cointegration. And we can consider the panel vector error correction model, if the variables are cointegrated.
+However, \citet{Onatski:2018} give the clearly explanation of spurious cointegration when the number of observations and the dimensionality go to infinity.
+For this issue, we stay for future research.
+
+
+From previous section, we know that the interesting parameters $\Phi$ can only be identified from $Var(\boldsymbol{\Delta z_{i}})=\boldsymbol{ G}^{'}\boldsymbol{\Sigma}_{\Gamma}\boldsymbol{G}+\boldsymbol{\Sigma}_{E} $. We also interested analyze the performance of QML estimator in large panel VAR models.
+
+
+
+\section{Monte Carlo Simulation}
+In this section, we provide the simulation evidences to show that this estimation methods  have good finite sample property on short $T$ panel VAR with individual and interactive time  effects.
+
+To begin with, the $\boldsymbol{z}_{i,t}$ are generated as
+\begin{align}
+\boldsymbol{z}_{i,t}=\boldsymbol{\Phi} \boldsymbol{z}_{i,t-1}+\boldsymbol{a}_{i}+\boldsymbol{g}_{t}+ \boldsymbol{\xi}_{i,t},\,\, t=-S+1,\ldots, 0,1,\ldots,T; \, i=1,2,\ldots,N,
+\end{align}
+where $\boldsymbol{z}_{i,t}$ is an $m$ by $1$ vector, $\boldsymbol{\Phi}$ is an $m$ by $m$ matrix of parameters, $\boldsymbol{a}_{i}$ is an $m$ by $1$ vector which is individual effects, and the time effects, $\boldsymbol{g}_{t}$ is an $m$ by $1$ vector.
+and
+\begin{align}
+\boldsymbol{\xi}_{i,t}=\boldsymbol{\Gamma}^{'}_{i}\boldsymbol{f}_{t}+\boldsymbol{\varepsilon}_{i,t},
+\end{align}
+where  $\boldsymbol{\Gamma}_{t}$ is an $r$ by $m$ matrix of factor loadings, $\boldsymbol{f}_{i}$ is  an $r$ by $1$ vector of unobserved common factor, and $\boldsymbol{\varepsilon}_{i,t}$ is an $m$ by $1$ vector of idiosyncratic errors.
+Here we assume the number of factors, $r$, are known and assume $r=2$.
+And we start the process with
+\begin{align}
+\boldsymbol{z}_{i,-s+1}=\boldsymbol{a}_{i}+\boldsymbol{\xi}_{i,t},\,\, \boldsymbol{\xi}_{i,t}\sim IID \left(\boldsymbol{0}_{m}, \sum^{s-1}_{j=0}\boldsymbol{\Phi}^{j}_{0}\Sigma_{\chi}(\boldsymbol{\Phi}^{j}_{0})^{'}  \right),
+\end{align}
+and set $s=60$. By discarding first sixty time period, the impact of initial value can be reduced. And $\phi_{ll}$ denoting the element in the $l$th row and $l$th column of the matrix $\boldsymbol{\Phi}.$
+
+
+For the generating process of factor loading, we consider two structure of factor loading.
+First, we follow the design by \citep{Hayakawa:2018}. The factor loading are generated as
+\begin{align}
+\Gamma_{\tau \ell i}\sim N\left(0,\sigma^{2}_{\Gamma \tau \ell}  \right), when\,\,\tau = \ell , \\
+\Gamma_{\tau \ell i}=0 ,\,\, when\,\,\tau \neq \ell, \,\, for \,\, all \,\,\tau=1,\ldots r ;\,\, \ell=1,\ldots, m.
+\end{align}
+where $\sigma^{2}_{\eta \tau \ell}=1/r$.
+Second, we consider sparse factor loading structure. The factor loading
+
+The factor $\boldsymbol{f}_{t}$ generated as
+\begin{align}
+f_{ \tau t}=\rho_{f \tau} f_{ \tau, t-1}+\left(1- \rho^{2}_{f \ell \tau} \right)^{\text{\textonehalf}}u_{f \tau},\,\, u_{f \tau}\sim N\left(0, 1 \right) \,\,for \,\, \tau=1,\ldots, r,
+\end{align}
+where $\rho_{f \ell \tau}=0.9$.
+The time effect, $\boldsymbol{g}_{t}$, are generated as
+\begin{align}
+g_{\ell t}=\dfrac{1}{2}\left( t^{2}-t \right), \,\, \ell=1,\ldots, m.
+\end{align}
+The individual effect, $\boldsymbol{\alpha}_{i}$ are generated as
+\begin{align}
+\alpha_{\ell i}=a_{0}\bar{\boldsymbol{\varepsilon}_{i}}+a_{1}\boldsymbol{\eta}_{i}, \,\, \ell=1,\ldots, m,
+\end{align}
+where $\bar{\boldsymbol{\varepsilon}_{i}}=T^{-1}\sum^{T}_{t=1}\boldsymbol{\varepsilon}_{i,t}$, $\boldsymbol{\varepsilon}_{i,t} \thicksim N(\boldsymbol{0}, \boldsymbol{\Sigma})$ and $\boldsymbol{\eta}_{i} \thicksim N(\boldsymbol{0}, \boldsymbol{\Sigma}_{\eta})$, where
+$\boldsymbol{\Sigma}_{\eta}=
+\begin{bmatrix}
+1 & 0 \\
+0 & 1
+\end{bmatrix}$. $a_{0}$ and $a_{1}$ are constant that use to control the correlation between individual effect and idiosyncratic error. Setting $a_{0}=1$ and $a_{1}=1$ is for ensures that individual effect are correlate with idiosyncratic error.
+
+Because the multiple local minima of the likelihood function may exist, we use the multiple starting values for the numerical optimization procedure to guarantee the true global optimal solution can be found.
+
+\subsection{Designs}
+In Monte Carlo simulation design, we consider the number of endogenous variables, $m=2$, the number of individual $N=\left(100, 300, 500 \right)$ and number of time units $T=\left(5, 10, 15 \right)$. All the simulation are 1000 replication.
+\begin{enumerate}
+
+\item panel VAR model with interactive effects and time effects with
+$\boldsymbol{\Sigma}=
+\begin{bmatrix}
+1 & 0.5 \\
+0.5 & 1
+\end{bmatrix}$
+
+\begin{enumerate}
+\item  Stationary Panel VAR with maximum eigenvalue of $\Phi$, $\lambda_{max}(\boldsymbol{\Phi})=0.6$ \\
+
+$\boldsymbol{\Phi}=
+\begin{bmatrix}
+0.4 & 0.2 \\
+0.2 & 0.4
+\end{bmatrix}$
+
+
+
+\item  Stationary Panel VAR with maximum eigenvalue of $\Phi$, $\lambda_{max}(\boldsymbol{\Phi})=0.8$ \\
+
+$\boldsymbol{\Phi}=
+\begin{bmatrix}
+0.6 & 0.2 \\
+0.2 & 0.6
+\end{bmatrix}$
+\\
+
+
+
+\item  Stationary Panel VAR with maximum eigenvalue of $\Phi$, $\lambda_{max}(\boldsymbol{\Phi})=0.95$ \\
+$\boldsymbol{\Phi}=
+\begin{bmatrix}
+0.7 & 0.25 \\
+0.25 & 0.7
+\end{bmatrix}$
+\\
+
+
+\item   Panel VAR with unit root, $\lambda_{max}(\boldsymbol{\Phi})=1$
+\\
+$\boldsymbol{\Phi}=
+\begin{bmatrix}
+1 & 0 \\
+0 & 1
+\end{bmatrix}$
+
+\end{enumerate}
+\end{enumerate}
+In the simulation results, we can observed the finite sample behaviour of QML estimator in PVAR model with interactive effects under the various simulation setting.\footnote{The codes are provided on GitHub (\url{https://github.com/yc1489/Panel_-VAR_with_interactive_effects}). We are in progress to improve optimization method for the large scale or sparse panel VAR model with interactive effects. } The criteria of the estimator are bias and RMSE (root mean square error). In this section, we focus on the results for our interested parameters, $\boldsymbol{\Phi}_{11}$, $\boldsymbol{\Phi}_{12}$, $\boldsymbol{\Phi}_{21}$ and $\boldsymbol{\Phi}_{22}$.
+
+
+
+Table 1 to Table 3 report the bias and RMSE for the case1 to case3, which are under the stationary condition. Table 4  report the bias and RMSE for case 4, which is under non-stationary condition.
+
+In the appendix B, we also report the simulation results for PVAR model without time effects. Table 5 to  Table 7 report the bias and RMSE for case 1 to case 3 based on PVAR model without time effects.
+Table 8 report  the bias and RMSE for case 4 based on PVAR model without time effects.
+
+
+\subsection{Results}
+
+
+We begin to report the finite sample performance of QML estimator  on the PVAR model with interactive effects.  In the simulation setting, we assume the true number of factor $r_{0}$ is $2$ and $r$ is the number of factor that can be estimated by  some test. Here, we assume the number of factor is know. Table 1 presents the bias and RMSE for $\Phi_{11}$,  $\Phi_{12}$, $\Phi_{21}$ and $\Phi_{22}$.  In most of case 1 results, the bias and RMSE decrease when N increase.
+
+As shown in Table 2, the bias and RMSE slightly large than the results of case 1, but the bias and RMSE also can decrease when N increase. In Table 3, the maximum eigenvalue of $\boldsymbol{\Phi}$ is close to unit one. The bias and RMSE large than the case 1 and case 2, but the bias and RMSE also can decrease when $N$ increase.  Table 4 present the results of unit root case, the performance of QML estimator is not well in diagonal of $\boldsymbol{\Phi}$, but the bias and RMSE are small in off diagonal of $\boldsymbol{\Phi}$.
+In appendix B, we also provide the simulation results for PVAR model without time effects. The results of PVAR model without time effects are similar as the results of PVAR model with time effects.
+
+
+
+\begin{table}[H]
+\caption{Bias, MAE and RMSE of $\Phi_{11}$, $\Phi_{12}$, $\Phi_{21}$ and $\Phi_{22}$}, and $\lambda_{max}(\boldsymbol{\Phi})=0.6$    \label{table1}
+\centering
+\tabcolsep=0.11cm
+\begin{threeparttable}
+\begin{tabular} {*{10}{c}}
+\toprule
+N& \multicolumn{3}{c}{T=5}&\multicolumn{3}{c}{T=10}&\multicolumn{3}{c}{T=15}\\
+\cmidrule(lr){1-10}
+$(r,r_{0})$ &   &(2,2)  &  &   &(2,2)  & &  &(2,2) & \\
+\cmidrule(lr){1-4} \cmidrule(lr){5-7}\cmidrule(lr){8-10}
+& \multicolumn{1}{c}{Bias} &\multicolumn{1}{c}{MAE}& \multicolumn{1}{c}{RMSE}&\multicolumn{1}{c}{Bias} &\multicolumn{1}{c}{MAE}& \multicolumn{1}{c}{RMSE}&\multicolumn{1}{c}{Bias}&\multicolumn{1}{c}{MAE} & \multicolumn{1}{c}{RMSE}\\
+  \cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10}
+ $\Phi_{11}$\\
+\cmidrule(lr){1-10}
+ 100&  & & &	  &	& & & &   \\
+300&   &  & &	  &	&	& & &  \\
+500& &  &   &	  &	& & & &	  \\
+\cmidrule(lr){1-10}
+$\Phi_{12}$\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+  100&  & & &	  &	& & & &   \\
+300&   &  & &	  &	&	& & &  \\
+500& &  &   &	  &	& & & &	  \\
+\cmidrule(lr){1-10}
+$\Phi_{21}$\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+ 100&  & & &	  &	& & & &   \\
+300&   &  & &	  &	&	& & &  \\
+500& &  &   &	  &	& & & &	  \\
+\cmidrule(lr){1-10}
+$\Phi_{22}$\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+ 100&  & & &	  &	& & & &   \\
+300&   &  & &	  &	&	& & &  \\
+500& &  &   &	  &	& & & &	  \\
+\cmidrule(lr){1-10}
+$\left\| \boldsymbol{D} \right\|_{2} $\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+100&  & & &	  &	& & & &   \\
+300&   &  & &	  &	&	& & &  \\
+500& &  &   &	  &	& & & &	  \\
+\cmidrule(lr){1-10}
+$\left\| \boldsymbol{F} \right\|_{F} $\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+100&  & & &	  &	& & & &   \\
+300&   &  & &	  &	&	& & &  \\
+500& &  &   &	  &	& & & &	  \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\footnotesize
+  \item[*] $\boldsymbol{\Phi}_{j,l}$, for $j=1,\ldots m$, $l=1,\ldots$ is the coefficient in row $j$ and colum $l$ of $\boldsymbol{\Phi}$.
+\item[*] $r_{0}$ is true value of factor, we assume the number of factor is $2$.
+ \item[*] $\left\| \boldsymbol{D} \right\|_{2}$ is the spectral norm of a matrix $\boldsymbol{D}$, where $\boldsymbol{D}$ is the square root of the largest eigenvalue of the matrix $\boldsymbol{A}^{'}\boldsymbol{A}$ and $\boldsymbol{A}=\hat{\boldsymbol{\Phi}}- \boldsymbol{\Phi}^{0}$. $\boldsymbol{\Phi}^{0}$ is the true value of matrix $\boldsymbol{\Phi}$.
+ \item[*] $\left\| \boldsymbol{F} \right\|_{F} $ is the Frobenius norm loss which is equal to the square root of the matrix trace of $AA^{'}$.
+    \end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+
+
+
+
+
+
+
+
+
+
+\begin{table}[H]
+\caption{Bias,MAE and RMSE of $\Phi_{11}$, $\Phi_{12}$, $\Phi_{21}$ and $\Phi_{22}$}, and $\lambda_{max}(\boldsymbol{\Phi})=0.8$    \label{table1}
+\centering
+\tabcolsep=0.11cm
+\begin{threeparttable}
+\begin{tabular} {*{10}{c}}
+\toprule
+N& \multicolumn{3}{c}{T=5}&\multicolumn{3}{c}{T=10}&\multicolumn{3}{c}{T=15}\\
+\cmidrule(lr){1-10}
+$(r,r_{0})$ &   &(2,2)  &  &   &(2,2)  & &  &(2,2) & \\
+\cmidrule(lr){1-4} \cmidrule(lr){5-7}\cmidrule(lr){8-10}
+& \multicolumn{1}{c}{Bias} &\multicolumn{1}{c}{MAE}& \multicolumn{1}{c}{RMSE}&\multicolumn{1}{c}{Bias} &\multicolumn{1}{c}{MAE}& \multicolumn{1}{c}{RMSE}&\multicolumn{1}{c}{Bias}&\multicolumn{1}{c}{MAE} & \multicolumn{1}{c}{RMSE}\\
+  \cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10}
+ $\Phi_{11}$\\
+\cmidrule(lr){1-10}
+100&  & & &	  &	& & & &   \\
+300&   &  & &	  &	&	& & &  \\
+500& &  &   &	  &	& & & &	  \\
+\cmidrule(lr){1-10}
+$\Phi_{12}$\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+  100&  & & &	  &	& & & &   \\
+300&   &  & &	  &	&	& & &  \\
+500& &  &   &	  &	& & & &	  \\
+\cmidrule(lr){1-10}
+$\Phi_{21}$\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+ 100&  & & &	  &	& & & &   \\
+300&   &  & &	  &	&	& & &  \\
+500& &  &   &	  &	& & & &	  \\
+\cmidrule(lr){1-10}
+$\Phi_{22}$\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+ 100&  & & &	  &	& & & &   \\
+300&   &  & &	  &	&	& & &  \\
+500& &  &   &	  &	& & & &	  \\
+\cmidrule(lr){1-10}
+$\left\| \boldsymbol{D} \right\|_{2} $\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+100&  & & &	  &	& & & &   \\
+300&   &  & &	  &	&	& & &  \\
+500& &  &   &	  &	& & & &	  \\
+\cmidrule(lr){1-10}
+$\left\| \boldsymbol{F} \right\|_{F} $\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+100&  & & &	  &	& & & &   \\
+300&   &  & &	  &	&	& & &  \\
+500& &  &   &	  &	& & & &	  \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\footnotesize
+  \item[*] $\boldsymbol{\Phi}_{j,l}$, for $j=1,\ldots m$, $l=1,\ldots$ is the coefficient in row $j$ and colum $l$ of $\boldsymbol{\Phi}$.
+\item[*] $r_{0}$ is true value of factor, we assume the number of factor is $2$.
+ \item[*] $\left\| \boldsymbol{D} \right\|_{2}$ is the spectral norm of a matrix $\boldsymbol{D}$, where $\boldsymbol{D}$ is the square root of the largest eigenvalue of the matrix $\boldsymbol{A}^{'}\boldsymbol{A}$ and $\boldsymbol{A}=\hat{\boldsymbol{\Phi}}- \boldsymbol{\Phi}^{0}$. $\boldsymbol{\Phi}^{0}$ is the true value of matrix $\boldsymbol{\Phi}$.
+ \item[*] $\left\| \boldsymbol{F} \right\|_{F} $ is the Frobenius norm loss which is equal to the square root of the matrix trace of $AA^{'}$.
+    \end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+
+
+
+\begin{table}[H]
+\caption{Bias, MAE and RMSE of $\Phi_{11}$, $\Phi_{12}$, $\Phi_{21}$ and $\Phi_{22}$}, and $\lambda_{max}(\boldsymbol{\Phi})=0.95$    \label{table1}
+\centering
+\tabcolsep=0.11cm
+\begin{threeparttable}
+\begin{tabular} {*{10}{c}}
+\toprule
+N& \multicolumn{3}{c}{T=5}&\multicolumn{3}{c}{T=10}&\multicolumn{3}{c}{T=15}\\
+\cmidrule(lr){1-10}
+$(r,r_{0})$ &   &(2,2)  &  &   &(2,2)  & &  &(2,2) & \\
+\cmidrule(lr){1-4} \cmidrule(lr){5-7}\cmidrule(lr){8-10}
+& \multicolumn{1}{c}{Bias} &\multicolumn{1}{c}{MAE}& \multicolumn{1}{c}{RMSE}&\multicolumn{1}{c}{Bias} &\multicolumn{1}{c}{MAE}& \multicolumn{1}{c}{RMSE}&\multicolumn{1}{c}{Bias}&\multicolumn{1}{c}{MAE} & \multicolumn{1}{c}{RMSE}\\
+  \cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10}
+ $\Phi_{11}$\\
+\cmidrule(lr){1-10}
+ 100& -0.0901 &0.1100 & 0.2702&	-0.1264 &	0.1414&0.3020&-0.1646&0.2092& 0.3949 \\
+300&  -0.0896& 0.1080 & 0.2562&	-0.1363&	0.1566&0.3151& -0.2168& 0.2687& 0.4662\\
+500& -0.0817& 0.0995& 0.2391  &-0.1331&	0.1462&0.2954& -0.2871&0.3329&	0.5568  \\
+\cmidrule(lr){1-10}
+$\Phi_{12}$\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+  100& -0.0667&0.1154& 0.2144&	-0.0823 &	0.1668& 0.2808& 0.0109& 0.2332& 0.3603  \\
+300& -0.0764&0.1204& 0.2256&-0.0597  &	0.1826&	0.3089&0.0483 &0.2915&0.4169 \\
+500& -0.0746&0.1253 & 0.2381&	-0.0686&	0.1618&0.2713 &0.0364&0.3097&0.4358	  \\
+\cmidrule(lr){1-10}
+$\Phi_{21}$\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+ 100& -0.0578 &0.1261 &0.2869&	-0.0902 &	0.1687&0.2869& -0.0152&0.2271&0.3509 \\
+300&-0.0640  & 0.1149 & 0.2938&	 -0.0741 &0.1735&0.2938	&-0.0054& 0.2726& 0.3971\\
+500& -0.0720&0.1205  & 0.2883  &-0.0773  &	0.1678& 0.2883&0.0418 & 0.3064&	0.4285  \\
+\cmidrule(lr){1-10}
+$\Phi_{22}$\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+ 100& -0.0911 &0.1074& 0.2702&	-0.1480 &0.1595& 0.3364& -0.2040&0.2364 & 0.4304\\
+300& -0.0922 & 0.1052 & 0.2544&	-0.1671&0.1865&0.3681	& -0.2923& 0.3243& 0.5403\\
+500&-0.0845 &0.1002&0.2316   &	-0.1578 &	0.1724&0.3503 &-0.2918&0.3338&	0.5493  \\
+\cmidrule(lr){1-10}
+$\left\| \boldsymbol{D} \right\|_{2} $\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+100&  & 0.2523& &	  &0.3587	& & &0.5160 &   \\
+300&   & 0.2489& &	  &	0.3905&	& &0.6622&  \\
+500& & 0.2467&   &	  &0.3652	& & &0.7382&	  \\
+\cmidrule(lr){1-10}
+$\left\| \boldsymbol{F} \right\|_{F} $\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+100&  & & &	  &	& & & &   \\
+300&   &  & &	  &	&	& & &  \\
+500& &  &   &	  &	& & & &	  \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\footnotesize
+  \item[*] $\boldsymbol{\Phi}_{j,l}$, for $j=1,\ldots m$, $l=1,\ldots$ is the coefficient in row $j$ and colum $l$ of $\boldsymbol{\Phi}$.
+\item[*] $r_{0}$ is true value of factor, we assume the number of factor is $2$.
+ \item[*] $\left\| \boldsymbol{D} \right\|_{2}$ is the spectral norm of a matrix $\boldsymbol{D}$, where $\boldsymbol{D}$ is the square root of the largest eigenvalue of the matrix $\boldsymbol{A}^{'}\boldsymbol{A}$ and $\boldsymbol{A}=\hat{\boldsymbol{\Phi}}- \boldsymbol{\Phi}^{0}$. $\boldsymbol{\Phi}^{0}$ is the true value of matrix $\boldsymbol{\Phi}$.
+ \item[*] $\left\| \boldsymbol{F} \right\|_{F} $ is the Frobenius norm loss which is equal to the square root of the matrix trace of $AA^{'}$.
+    \end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+
+
+
+
+\begin{table}[H]
+\caption{Bias, MAE and RMSE of $\Phi_{11}$, $\Phi_{12}$, $\Phi_{21}$ and $\Phi_{22}$}, and $\lambda_{max}(\boldsymbol{\Phi})=1$    \label{table1}
+\centering
+\tabcolsep=0.11cm
+\begin{threeparttable}
+\begin{tabular} {*{10}{c}}
+\toprule
+N& \multicolumn{3}{c}{T=5}&\multicolumn{3}{c}{T=10}&\multicolumn{3}{c}{T=15}\\
+\cmidrule(lr){1-10}
+$(r,r_{0})$ &   &(2,2)  &  &   &(2,2)  & &  &(2,2) & \\
+\cmidrule(lr){1-4} \cmidrule(lr){5-7}\cmidrule(lr){8-10}
+& \multicolumn{1}{c}{Bias} &\multicolumn{1}{c}{MAE}& \multicolumn{1}{c}{RMSE}&\multicolumn{1}{c}{Bias} &\multicolumn{1}{c}{MAE}& \multicolumn{1}{c}{RMSE}&\multicolumn{1}{c}{Bias}&\multicolumn{1}{c}{MAE} & \multicolumn{1}{c}{RMSE}\\
+  \cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10}
+ $\Phi_{11}$\\
+\cmidrule(lr){1-10}
+ 100&  & & &	  &	& & & &   \\
+300&   &  & &	  &	&	& & &  \\
+500& &  &   &	  &	& & & &	  \\
+\cmidrule(lr){1-10}
+$\Phi_{12}$\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+  100&  & & &	  &	& & & &   \\
+300&   &  & &	  &	&	& & &  \\
+500& &  &   &	  &	& & & &	  \\
+\cmidrule(lr){1-10}
+$\Phi_{21}$\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+ 100&  & & &	  &	& & & &   \\
+300&   &  & &	  &	&	& & &  \\
+500& &  &   &	  &	& & & &	  \\
+\cmidrule(lr){1-10}
+$\Phi_{22}$\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+ 100&  & & &	  &	& & & &   \\
+300&   &  & &	  &	&	& & &  \\
+500& &  &   &	  &	& & & &	  \\
+\cmidrule(lr){1-10}
+$\left\| \boldsymbol{D} \right\|_{2} $\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+100&  & & &	  &	& & & &   \\
+300&   &  & &	  &	&	& & &  \\
+500& &  &   &	  &	& & & &	  \\
+\cmidrule(lr){1-10}
+$\left\| \boldsymbol{F} \right\|_{F} $\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+100&  & & &	  &	& & & &   \\
+300&   &  & &	  &	&	& & &  \\
+500& &  &   &	  &	& & & &	  \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\footnotesize
+  \item[*] $\boldsymbol{\Phi}_{j,l}$, for $j=1,\ldots m$, $l=1,\ldots$ is the coefficient in row $j$ and colum $l$ of $\boldsymbol{\Phi}$.
+\item[*] $r_{0}$ is true value of factor, we assume the number of factor is $2$.
+ \item[*] $\left\| \boldsymbol{D} \right\|_{2}$ is the spectral norm of a matrix $\boldsymbol{D}$, where $\boldsymbol{D}$ is the square root of the largest eigenvalue of the matrix $\boldsymbol{A}^{'}\boldsymbol{A}$ and $\boldsymbol{A}=\hat{\boldsymbol{\Phi}}- \boldsymbol{\Phi}^{0}$. $\boldsymbol{\Phi}^{0}$ is the true value of matrix $\boldsymbol{\Phi}$.
+ \item[*] $\left\| \boldsymbol{F} \right\|_{F} $ is the Frobenius norm loss which is equal to the square root of the matrix trace of $AA^{'}$.
+    \end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+
+
+
+
+
+
+
+
+
+\section{concluding remarks}
+In this study, we extend the work by \citet{Hayakawa:2018} to VAR structure. The present finding contribute to understanding the finite sample performance of QML estimator in short $T$ PVAR model with cross-sectional dependence.
+ In Monte Carlo results, we show the  performance of QML estimator performs reasonably well in most of cases. Although, we extend univariate model to multivariate model, it is assume the coefficients are not sparse. However, coefficients may sparsity in large scale PVAR model.  It is interesting to investigate the performance of QML estimator on sparse PVAR model with cross-sectional dependence.   Besides, it is also interesting to extend the PVAR model to panel error correction model and investigate nonstationary cross-sectional dependence.
+
+
+
+
+\appendix
+\appendixpage
+
+\section{Locally or globally identified to panel VAR with interactive effects ?}
+From \citet{Hayakawa:2018} proposition 3, we know that the global identification can only be guaranteed with strictly exogenous regressors. Here, I would like to re-examine this proposition.
+
+
+According to equation  (\ref{10}), the average quasi log- likelihood function can be expressed as
+\begin{align}
+\bar{\ell}_{N} (\boldsymbol{\theta})=-\frac{T}{2} \log (2\pi)-\frac{1}{2} \log \vert  \boldsymbol{\Sigma}_{R \chi} \vert-\dfrac{1}{2}\sum^{N}_{i=1}\left( \boldsymbol{R}^{-1}(\boldsymbol{\Phi})\boldsymbol{\chi}_{i}\right)^{'}\boldsymbol{\Sigma}_{R \chi}^{-1}\left( \boldsymbol{R}^{-1}(\boldsymbol{\Phi}) \boldsymbol{\chi}_{i}\right) \label{A1}
+\end{align}
+
+According to the previous assumptions, we know
+\begin{align}
+\bar{\ell}_{N}(\boldsymbol{\theta}_{0})\overset{a.s.}{\to} -\frac{T}{2}\log (2\pi)-\frac{1}{2} \log
+\end{align}
+and
+\begin{align}
+\begin{split}
+\bar{\ell}_{N}(\boldsymbol{\theta}) &\overset{a.s.}{\to} -\frac{T}{2}\log(2 \pi)-\frac{1}{2} \log \vert \boldsymbol{\Sigma}_{R \chi} \vert-\frac{1}{2} Tr \left[ \boldsymbol{\Sigma}_{R \chi}^{-1}\boldsymbol{\Sigma}_{R \chi} \right]- \\
+&\frac{1}{2} \left( \boldsymbol{\varphi}- \boldsymbol{\varphi}_{0} \right)^{'}\boldsymbol{A}\left(\boldsymbol{\psi}\right) \left(\boldsymbol{\varphi}- \boldsymbol{\varphi}_{0}\right)-\left( \Phi-\Phi_{0}  \right)\varrho(\boldsymbol{\psi}, \boldsymbol{\psi}_{0}),\label{A2}
+\end{split}
+\end{align}
+where
+\begin{align}
+\varrho=Tr \left\lbrace  \left[\boldsymbol{\Sigma}_{R \chi}(\boldsymbol{\psi})-\boldsymbol{\Sigma}_{R \chi}(\boldsymbol{\psi}_{0}) \right]\boldsymbol{C}\left(\boldsymbol{\psi}, \boldsymbol{\Phi}_{0} \right) \right\rbrace ,
+\end{align}
+and
+\begin{align}
+\boldsymbol{C}(\boldsymbol{\psi}, \boldsymbol{\Phi}_{0})=\boldsymbol{\Sigma}_{R \chi}^{-1}
+\begin{bmatrix}
+\boldsymbol{0}                                 & \boldsymbol{0}                   & \cdots         &\boldsymbol{0}  & \boldsymbol{0} \\
+\boldsymbol{I}_{m}                        &\boldsymbol{0}                        &  \cdots     & \boldsymbol{0}  &\boldsymbol{0}  \\
+\vdots                                            &       \vdots                                & \ddots       & \vdots              & \vdots \\
+\boldsymbol{\Phi}^{T-3}_{0}             &  \boldsymbol{\Phi}^{T-4}_{0}   & \cdots   & \boldsymbol{0}   & \boldsymbol{0} \\
+\boldsymbol{\Phi}^{T-2}_{0}            &  \boldsymbol{\Phi}^{T-3}_{0}   & \cdots   & \boldsymbol{I}_{m} & \boldsymbol{0}
+\end{bmatrix}
+\end{align}
+Then, from equation (\ref{A1}) and (\ref{A2}), we have
+\begin{align}
+\begin{split}
+\bar{\ell}_{N}(\boldsymbol{\theta}_{0})-\bar{\ell}_{N}(\boldsymbol{\theta}) & \overset{a.s.}{\to} \\
+& \lim_{N \to \infty} E_{0}\left[ \bar{\ell}_{N}(\boldsymbol{\theta}_{0})-\bar{\ell}_{N}(\boldsymbol{\theta})  \right]=\frac{1}{2}Tr \left[ \boldsymbol{\Sigma}(\boldsymbol{\psi}_{0})_{R \chi}^{-1}\boldsymbol{\Sigma}_{R \chi}(\boldsymbol{\psi}_{0})  \right]-\\
+&\frac{1}{2}\log\left( \vert \boldsymbol{\Sigma}_{R \chi}(\boldsymbol{\psi}_{0}) \vert/ \vert \boldsymbol{\Sigma}_{R \chi}(\boldsymbol{\psi})  \vert   \right)-\frac{T}{2}+ \frac{1}{2} \left( \boldsymbol{\varphi}-\boldsymbol{\varphi}_{0} \right)^{'}\boldsymbol{A}(\boldsymbol{\psi})\left(  \boldsymbol{\varphi}-\boldsymbol{\varphi}_{0}  \right)+\left( \boldsymbol{\Phi}-\boldsymbol{\Phi}_{0}  \right)  \varrho (\boldsymbol{\psi}, \boldsymbol{\psi}_{0}) \geq 0, \label{A3}
+\end{split}
+\end{align}
+
+
+From equation (\ref{40}), we have
+\begin{align}
+\begin{split}
+\bar{\ell}_{N}\left(\boldsymbol{\theta}\right)&=N^{-1} \ell_{N}(\boldsymbol{\varphi}, \boldsymbol{\theta})= \\
+&-\frac{T}{2}log(2 \pi)-\frac{1}{2}log \vert \boldsymbol{\Sigma}_{\chi}(\boldsymbol{\phi}) \vert-\frac{1}{2N}\sum^{N}_{i=1} \boldsymbol{\chi}^{'}_{i}(\boldsymbol{\varphi})\boldsymbol{\Sigma}_{\chi}(\boldsymbol{\phi})^{-1}\boldsymbol{\chi}_{i}(\boldsymbol{\varphi}),
+\end{split}
+\end{align}
+And by equation (\ref{A3}), we know
+\begin{align}
+\bar{\ell}_{N}(\boldsymbol{\varphi}_{0}, \boldsymbol{\psi}_{0})-\bar{\ell}_{N}(\boldsymbol{\varphi}, \boldsymbol{\psi}) \overset{a.s.}{\to}  \lim_{N\to \infty} E_{0}\left[\bar{\ell}_{N}(\boldsymbol{\varphi}_{0},\boldsymbol{\psi}_{0})-\bar{\ell}_{N}(\boldsymbol{\varphi}, \boldsymbol{\psi})   \right]\geq 0,
+\end{align}
+\begin{align}
+\begin{split}
+2\lim_{N \to \infty} E_{0}\left[\bar{\ell}_{N}(\boldsymbol{\varphi}_{0}, \boldsymbol{\psi}(\psi)_{0})-\bar{\ell}_{N}(\boldsymbol{\varphi}, \boldsymbol{\psi})  \right]=&\kappa(\boldsymbol{\psi}, \boldsymbol{\psi}_{0})+\left( \boldsymbol{\varphi}-\boldsymbol{\varphi}_{0} \right)^{'}\boldsymbol{A}(\boldsymbol{\psi})\left( \boldsymbol{\varphi}-\boldsymbol{\varphi}_{0} \right)+\\
+&2\left( \boldsymbol{\Phi}-\boldsymbol{\Phi}_{0} \right)\varrho(\boldsymbol{\psi}, \boldsymbol{\psi}_{0}), \label{A4}
+\end{split}
+\end{align}
+where
+\begin{align}
+\kappa\left(\boldsymbol{\psi}, \boldsymbol{\psi}_{0} \right)=Tr \left[ \boldsymbol{\Sigma}_{\chi}^{-1}(\boldsymbol{\psi})  \boldsymbol{\Sigma}_{\chi}(\boldsymbol{\psi}_{0})  \right]-\log \left( \vert \boldsymbol{\Sigma}_{\chi}(\boldsymbol{\psi}_{0})  \vert/\vert  \boldsymbol{\Sigma}_{\chi}(\boldsymbol{\psi})  \vert   \right)-T,
+\end{align}
+and
+\begin{align}
+\varrho(\boldsymbol{\psi}, \boldsymbol{\psi}_{0})=Tr\left\lbrace \left[ \boldsymbol{\Sigma}_{\chi}(\boldsymbol{\psi})-\boldsymbol{\Sigma}_{\chi}(\boldsymbol{\psi}_{0})  \right]\boldsymbol{\Sigma}^{-1}_{\chi}(\boldsymbol{\psi})\boldsymbol{LB}(\boldsymbol{\Phi}_{0})^{-1}\right\rbrace
+\end{align}
+Here, we define the eigenvalues of $\boldsymbol{\Sigma}_{\chi}(\boldsymbol{\psi}_{0})$ and $\boldsymbol{\Sigma}_{\chi}(\psi)$ are $\lambda_{0t}$ and $\lambda_{t}$, respectively. Therefore, $\kappa\left(\boldsymbol{\psi}, \boldsymbol{\psi}_{0} \right)$ can write as
+\begin{align}
+\kappa\left(\boldsymbol{\psi}, \boldsymbol{\psi}_{0} \right)=\sum^{T}_{t=1}\left[ (\lambda_{0t}/\lambda_{t})-\log (\lambda_{0t}/\lambda_{t})-1  \right]
+\end{align}
+
+From assumption, we know $\boldsymbol{A}(\boldsymbol{\psi})$ is a positive definite matrix, then
+\begin{align}
+ \left( \boldsymbol{\varphi}-\boldsymbol{\varphi}_{0}  \right)^{'}\boldsymbol{A}(\boldsymbol{\psi})\left(  \boldsymbol{\varphi}-\boldsymbol{\varphi}_{0}\right) \geq\lambda_{min}\left[ \boldsymbol{A}(\boldsymbol{\psi})  \right]\left(\boldsymbol{\varphi}-\boldsymbol{\varphi}_{0}   \right)^{'}\left(  \boldsymbol{\varphi}-\boldsymbol{\varphi}_{0}\right)
+\end{align}
+And we know $\lambda_{0t}$ and $\lambda_{t}$ are all positive. Therefore,in equation (\ref{A4}), $\kappa(\boldsymbol{\psi}, \boldsymbol{\psi}_{0})$ and $\left( \boldsymbol{\varphi}-\boldsymbol{\varphi}_{0}  \right)^{'}\boldsymbol{A}(\boldsymbol{\psi})\left(  \boldsymbol{\varphi}-\boldsymbol{\varphi}_{0}\right)$ are not negative. But, we can not sure $\left(\boldsymbol{\Phi}-\boldsymbol{\Phi}_{0}  \right)$ is positive. Therefore, we can not guarantee that global identification of $\boldsymbol{\Phi}_{0}$ can be find.
+
+
+
+
+
+
+\section{Panel VAR model without time effects}
+Here, we also provide the simulation results for QML estimator in panel VAR model with interactive effects but without time effects.
+The $\boldsymbol{y}_{i,t}$ are generated as
+\begin{align}
+\boldsymbol{z}_{i,t}=\boldsymbol{\Phi} \boldsymbol{z}_{i,t-1}+\boldsymbol{a}_{i}+ \boldsymbol{\xi}_{i,t},\,\, t=-S+1,\ldots, 0,1,\ldots,T; \, i=1,2,\ldots,N,
+\end{align}
+where $\boldsymbol{z}_{i,t}$ is an $m$ by $1$ vector, $\boldsymbol{\Phi}$ is an $m$ by $m$ matrix of parameters, $\boldsymbol{a}_{i}$ is an $m$ by $1$ vector which is individual effects.
+and
+\begin{align}
+\boldsymbol{\xi}_{i,t}=\boldsymbol{\Gamma}^{'}_{i}\boldsymbol{f}_{t}+\boldsymbol{\varepsilon}_{i,t},
+\end{align}
+where  $\boldsymbol{\Gamma}_{t}$ is an $r$ by $m$ matrix of factor loadings, $\boldsymbol{f}_{i}$ is  an $r$ by $1$ vector of unobserved common factor, and $\boldsymbol{\varepsilon}_{i,t}$ is an $m$ by $1$ vector of idiosyncratic errors.
+Here we also assume the number of factors, $r$, are known and assume $r=2$.
+
+
+
+
+\begin{table}[H]
+\caption{Bias and RMSE of $\Phi_{11}$, $\Phi_{12}$, $\Phi_{21}$ and $\Phi_{22}$}, , and $\lambda_{max}(\boldsymbol{\Phi})=0.3$     \label{table1}
+\centering
+\tabcolsep=0.11cm
+\begin{threeparttable}
+\begin{tabular} {*{10}{c}}
+\toprule
+N& \multicolumn{3}{c}{T=5}&\multicolumn{3}{c}{T=7}&\multicolumn{3}{c}{T=8}\\
+\cmidrule(lr){1-10}
+$(r,r_{0})$ &   &(2,2)  &  &   &(2,2)  & &  &(2,2) & \\
+\cmidrule(lr){1-4} \cmidrule(lr){5-7}\cmidrule(lr){8-10}
+& \multicolumn{1}{c}{Bias} &\multicolumn{1}{c}{MAE}& \multicolumn{1}{c}{RMSE}&\multicolumn{1}{c}{Bias} &\multicolumn{1}{c}{MAE}& \multicolumn{1}{c}{RMSE}&\multicolumn{1}{c}{Bias}&\multicolumn{1}{c}{MAE} & \multicolumn{1}{c}{RMSE}\\
+  \cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10}
+ $\Phi_{11}$\\
+\cmidrule(lr){1-10}
+ 100&  & & &	  &	& & & &   \\
+300&   &  & &	  &	&	& & &  \\
+500& &  &   &	  &	& & & &	  \\
+\cmidrule(lr){1-10}
+$\Phi_{12}$\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+  100&  & & &	  &	& & & &   \\
+300&   &  & &	  &	&	& & &  \\
+500& &  &   &	  &	& & & &	  \\
+\cmidrule(lr){1-10}
+$\Phi_{21}$\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+ 100&  & & &	  &	& & & &   \\
+300&   &  & &	  &	&	& & &  \\
+500& &  &   &	  &	& & & &	  \\
+\cmidrule(lr){1-10}
+$\Phi_{22}$\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+ 100&  & & &	  &	& & & &   \\
+300&   &  & &	  &	&	& & &  \\
+500& &  &   &	  &	& & & &	  \\
+\cmidrule(lr){1-10}
+$\left\| \boldsymbol{D} \right\|_{2} $\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+100&  & & &	  &	& & & &   \\
+300&   &  & &	  &	&	& & &  \\
+500& &  &   &	  &	& & & &	  \\
+\cmidrule(lr){1-10}
+$\left\| \boldsymbol{F} \right\|_{F} $\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+100&  & & &	  &	& & & &   \\
+300&   &  & &	  &	&	& & &  \\
+500& &  &   &	  &	& & & &	  \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\footnotesize
+  \item[*] $\boldsymbol{\Phi}_{j,l}$, for $j=1,\ldots m$, $l=1,\ldots$ is the coefficient in row $j$ and colum $l$ of $\boldsymbol{\Phi}$.
+\item[*] $r_{0}$ is true value of factor, we assume the number of factor is $2$.
+ \item[*] $\left\| \boldsymbol{D} \right\|_{2}$ is the spectral norm of a matrix $\boldsymbol{D}$, where $\boldsymbol{D}$ is the square root of the largest eigenvalue of the matrix $\boldsymbol{A}^{'}\boldsymbol{A}$ and $\boldsymbol{A}=\hat{\boldsymbol{\Phi}}- \boldsymbol{\Phi}^{0}$. $\boldsymbol{\Phi}^{0}$ is the true value of matrix $\boldsymbol{\Phi}$.
+ \item[*] $\left\| \boldsymbol{F} \right\|_{F} $ is the Frobenius norm loss which is equal to the square root of the matrix trace of $AA^{'}$.
+    \end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+
+
+
+
+
+
+\begin{table}[H]
+\caption{Bias and RMSE of $\Phi_{11}$, $\Phi_{12}$, $\Phi_{21}$ and $\Phi_{22}$} , and $\lambda_{max}(\boldsymbol{\Phi})=0.6$    \label{table1}
+\centering
+\tabcolsep=0.11cm
+\begin{threeparttable}
+\begin{tabular} {*{10}{c}}
+\toprule
+N& \multicolumn{3}{c}{T=5}&\multicolumn{3}{c}{T=10}&\multicolumn{3}{c}{T=15}\\
+\cmidrule(lr){1-10}
+$(r,r_{0})$ &   &(2,2)  &  &   &(2,2)  & &  &(2,2) & \\
+\cmidrule(lr){1-4} \cmidrule(lr){5-7}\cmidrule(lr){8-10}
+& \multicolumn{1}{c}{Bias} &\multicolumn{1}{c}{MAE}& \multicolumn{1}{c}{RMSE}&\multicolumn{1}{c}{Bias} &\multicolumn{1}{c}{MAE}& \multicolumn{1}{c}{RMSE}&\multicolumn{1}{c}{Bias}&\multicolumn{1}{c}{MAE} & \multicolumn{1}{c}{RMSE}\\
+  \cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10}
+ $\Phi_{11}$\\
+\cmidrule(lr){1-10}
+100& -0.0783 &0.1740 &0.2619 &	-0.0473 &0.0932&0.1680 &-0.1600& 0.1869&0.3158\\
+300&-0.0501 & 0.1276& 0.2070&-0.0273	  &0.0734	&0.1510	& -0.1343& 0.1645&  0.3095\\
+500&-0.0502& 0.1079& 0.1784  &-0.0184  &	0.0629& 0.1398&-0.1151 & 0.1443&	0.2839  \\
+\cmidrule(lr){1-10}
+$\Phi_{12}$\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+  100&-0.0126  &0.1411& 0.2070&	-0.0229 &0.0724	& 0.1254&-0.0870 &0.1354& 0.2160 \\
+300& -0.0080 &0.0910& 0.1398&-0.0103	  &	0.0542&	0.1006& -0.0759&0.1193 & 0.1985\\
+500& -0.0109& 0.0812 &0.1251 &-0.0082	  &0.0545	&0.1018 &-0.0676 &0.1052 &	0.1747  \\
+\cmidrule(lr){1-10}
+$\Phi_{21}$\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+ 100& -0.0318 & 0.1412&0.2167&-0.0335  &	0.0909&0.1719 &-0.0803&0.1285& 0.2038 \\
+300&  -0.0258& 0.0949 &0.1665&-0.0218  &0.0740&0.1574& -0.0675& 0.1081& 0.1804\\
+500&-0.0258& 0.0864 & 0.1538 &	-0.0205 &0.0691&0.1371 & -0.0588& 0.0964&	0.1535  \\
+\cmidrule(lr){1-10}
+$\Phi_{22}$\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+ 100& -0.0509&0.1673&0.2506&	-0.0518&	0.0959& 0.1826& -0.1343& 0.1716& 0.2915  \\
+300& -0.0432 &0.1286 & 0.1997&	-0.0261 &0.0779&0.1616&-0.1196 &0.1535 & 0.2887\\
+500& -0.0367& 0.1126 & 0.1820  &	-0.0159 &	0.0632& 0.1317& -0.0962& 0.1321&	0.2534  \\
+\cmidrule(lr){1-10}
+$\left\| \boldsymbol{D} \right\|_{2} $\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+100&  &0.3479& &	  &	0.1946& & &0.3341&   \\
+300&   &0.2465 & &	  &	0.1548&	& &0.2906&  \\
+500& & 0.2170&   &	  &	0.1390& & & 0.2559&	  \\
+\cmidrule(lr){1-10}
+$\left\| \boldsymbol{F} \right\|_{F} $\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+100&  & & &	  &	& & & &   \\
+300&   &  & &	  &	&	& & &  \\
+500& &  &   &	  &	& & & &	  \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\footnotesize
+  \item[*] $\boldsymbol{\Phi}_{j,l}$, for $j=1,\ldots m$, $l=1,\ldots$ is the coefficient in row $j$ and colum $l$ of $\boldsymbol{\Phi}$.
+\item[*] $r_{0}$ is true value of factor, we assume the number of factor is $2$.
+ \item[*] $\left\| \boldsymbol{D} \right\|_{2}$ is the spectral norm of a matrix $\boldsymbol{D}$, where $\boldsymbol{D}$ is the square root of the largest eigenvalue of the matrix $\boldsymbol{A}^{'}\boldsymbol{A}$ and $\boldsymbol{A}=\hat{\boldsymbol{\Phi}}- \boldsymbol{\Phi}^{0}$. $\boldsymbol{\Phi}^{0}$ is the true value of matrix $\boldsymbol{\Phi}$.
+ \item[*] $\left\| \boldsymbol{F} \right\|_{F} $ is the Frobenius norm loss which is equal to the square root of the matrix trace of $AA^{'}$.
+    \end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+
+
+
+
+
+
+
+
+\begin{table}[H]
+\caption{Bias and RMSE of $\Phi_{11}$, $\Phi_{12}$, $\Phi_{21}$ and $\Phi_{22}$} , and $\lambda_{max}(\boldsymbol{\Phi})=0.8$    \label{table1}
+\centering
+\tabcolsep=0.11cm
+\begin{threeparttable}
+\begin{tabular} {*{10}{c}}
+\toprule
+N& \multicolumn{3}{c}{T=5}&\multicolumn{3}{c}{T=10}&\multicolumn{3}{c}{T=15}\\
+\cmidrule(lr){1-10}
+$(r,r_{0})$ &   &(2,2)  &  &   &(2,2)  & &  &(2,2) & \\
+\cmidrule(lr){1-4} \cmidrule(lr){5-7}\cmidrule(lr){8-10}
+& \multicolumn{1}{c}{Bias} &\multicolumn{1}{c}{MAE}& \multicolumn{1}{c}{RMSE}&\multicolumn{1}{c}{Bias} &\multicolumn{1}{c}{MAE}& \multicolumn{1}{c}{RMSE}&\multicolumn{1}{c}{Bias}&\multicolumn{1}{c}{MAE} & \multicolumn{1}{c}{RMSE}\\
+  \cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10}
+ $\Phi_{11}$\\
+\cmidrule(lr){1-10}
+ 100& -0.1597& 0.2214& 0.3238&	-0.1029  &	0.1382& 0.2319& -0.3707&0.3869& 0.5545 \\
+300& -0.1341& 0.1839& 0.3025&-0.0801	  &0.1090	&0.1889& -0.5275& 0.5410& 0.7293 \\
+500& -0.1122& 0.1610&  0.2609&	-0.0902 &0.1179	&0.2314 &-0.5322 &0.5443 &0.7278	  \\
+\cmidrule(lr){1-10}
+$\Phi_{12}$\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+  100& -0.0555 & 0.1591&0.2207 &-0.0379 &	0.1174&0.1960 & -0.1193& 0.2221& 0.3367  \\
+300&  -0.0325& 0.1150&0.1685&	-0.0147 &0.0736	&0.1197	&-0.1456& 0.2543& 0.3698\\
+500&-0.0295& 0.1041& 0.1555  &	-0.0161  &0.0739	& 0.1280&-0.1381 &0.2498 &	0.3742  \\
+\cmidrule(lr){1-10}
+$\Phi_{21}$\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+ 100&-0.0811 &0.1909& 0.2904&	-0.1111 &	0.1748& 0.2862& -0.0992& 0.2246&0.3389  \\
+300& -0.0798  & 0.1552 &0.2722&	-0.0963 &	0.1473&	0.2655& -0.1144&0.2444 & 0.3745\\
+500& -0.0771& 0.1360& 0.2409 &	-0.0994 &0.1530&0.2876 &-0.1292 &0.2469 &	0.3826 \\
+\cmidrule(lr){1-10}
+$\Phi_{22}$\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+ 100& -0.1847 & 0.2366&0.3519 &	 -0.1784&0.2101	& 0.3628& -0.3381& 0.3646& 0.5406  \\
+300&-0.1360 &0.1877  &0.3073 &-0.1452	  &0.1762	&0.3266	&-0.4886 &0.5096 &0.7044  \\
+500& -0.1275& 0.1743 &0.2918   &	-0.1589 &0.1874	&0.3610 &-0.5319&0.5457 &	0.7454  \\
+\cmidrule(lr){1-10}
+$\left\| \boldsymbol{D} \right\|_{2} $\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+100&  &0.44845 & &	  &	0.36409& & &0.64506 &   \\
+300&  & 0.36082& &	  &0.28705	&	& &0.83082&  \\
+500& & 0.32362&   &	  &0.30345	& & & 0.85813&	  \\
+\cmidrule(lr){1-10}
+$\left\| \boldsymbol{F} \right\|_{F} $\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+100&  & & &	  &	& & & &   \\
+300&   &  & &	  &	&	& & &  \\
+500& &  &   &	  &	& & & &	  \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\footnotesize
+  \item[*] $\boldsymbol{\Phi}_{j,l}$, for $j=1,\ldots m$, $l=1,\ldots$ is the coefficient in row $j$ and colum $l$ of $\boldsymbol{\Phi}$.
+\item[*] $r_{0}$ is true value of factor, we assume the number of factor is $2$.
+ \item[*] $\left\| \boldsymbol{D} \right\|_{2}$ is the spectral norm of a matrix $\boldsymbol{D}$, where $\boldsymbol{D}$ is the square root of the largest eigenvalue of the matrix $\boldsymbol{A}^{'}\boldsymbol{A}$ and $\boldsymbol{A}=\hat{\boldsymbol{\Phi}}- \boldsymbol{\Phi}^{0}$. $\boldsymbol{\Phi}^{0}$ is the true value of matrix $\boldsymbol{\Phi}$.
+ \item[*] $\left\| \boldsymbol{F} \right\|_{F} $ is the Frobenius norm loss which is equal to the square root of the matrix trace of $AA^{'}$.
+    \end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+
+
+
+
+
+\begin{table}[H]
+\caption{Bias and RMSE of $\Phi_{11}$, $\Phi_{12}$, $\Phi_{21}$ and $\Phi_{22}$, and $\lambda_{max}(\boldsymbol{\Phi})=0.95$}     \label{table1}
+\centering
+\tabcolsep=0.11cm
+\begin{threeparttable}
+\begin{tabular} {*{10}{c}}
+\toprule
+N& \multicolumn{3}{c}{T=5}&\multicolumn{3}{c}{T=10}&\multicolumn{3}{c}{T=15}\\
+\cmidrule(lr){1-10}
+$(r,r_{0})$ &   &(2,2)  &  &   &(2,2)  & &  &(2,2) & \\
+\cmidrule(lr){1-4} \cmidrule(lr){5-7}\cmidrule(lr){8-10}
+& \multicolumn{1}{c}{Bias} &\multicolumn{1}{c}{MAE}& \multicolumn{1}{c}{RMSE}&\multicolumn{1}{c}{Bias} &\multicolumn{1}{c}{MAE}& \multicolumn{1}{c}{RMSE}&\multicolumn{1}{c}{Bias}&\multicolumn{1}{c}{MAE} & \multicolumn{1}{c}{RMSE}\\
+  \cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10}
+ $\Phi_{11}$\\
+\cmidrule(lr){1-10}
+ 100&-0.2006 & 0.2348& 0.3443&	-0.1671 &	0.2136& 0.3465&-0.6010 &0.6140 & 0.7818 \\
+300& -0.1602 &0.1913 &0.2881&	-0.1589 &0.1957	&0.3241	&-0.7254& 0.7337& 0.8849 \\
+500& -0.1446&0.1714 & 0.2692&	 -0.2025 &0.2338& 0.3740& -0.7991& 0.8091&	0.9626  \\
+\cmidrule(lr){1-10}
+$\Phi_{12}$\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+  100&-0.0659  &0.1965 & 0.2628&-0.0262	  &0.2442& 0.3438&-0.1549 &0.3247& 0.4636 \\
+300& -0.0432 & 0.1523& 0.2060&	-0.0172 &	0.2154&	0.3167& -0.1830& 0.3498&0.4840  \\
+500& -0.0339& 0.1422 &  0.1923 &	-0.0158 &0.2104	& 0.3145& -0.2502&0.4030&	0.5501  \\
+\cmidrule(lr){1-10}
+$\Phi_{21}$\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+ 100& -0.2104 & 0.2717&0.4080 &-0.3077	  &0.3971	&0.5460& -0.1961& 0.3791&0.5417  \\
+300&-0.1936  & 0.2311& 0.3764&-0.4019	  &	0.4644&0.6268	&-0.2644& 0.4247& 0.5806 \\
+500&-0.1859 & 0.2192& 0.3712 &	 -0.4753 &0.5320	& 0.6960&-0.2551 & 0.4311&	0.5842  \\
+\cmidrule(lr){1-10}
+$\Phi_{22}$\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+ 100&-0.3242 & 0.3513& 0.5038&	-0.6116 &0.6191	&0.8367& -0.6352&0.6482 &  0.8420 \\
+300& -0.2588 & 0.2867 &0.4512&	-0.6875 &0.6939	&0.9040	& -0.7509& 0.7633&  0.9280\\
+500&-0.2369 &  0.2596& 0.4189  &	-0.7589  &0.7645&0.9765 & -0.7647& 0.7779&	0.9448  \\
+\cmidrule(lr){1-10}
+$\left\| \boldsymbol{D} \right\|_{2} $\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+100&  & 0.5940& &	  &	0.8618& & & 1.0763&   \\
+300&   &0.4860 & &	  &0.9462	&	& & 1.2293&  \\
+500& & 0.4463&   &	  &1.0437	& & &1.3130 &	  \\
+\cmidrule(lr){1-10}
+$\left\| \boldsymbol{F} \right\|_{F} $\\
+\cmidrule(lr){1-4}   \cmidrule(lr){5-7}   \cmidrule(lr){8-10}
+100&  & & &	  &	& & & &   \\
+300&   &  & &	  &	&	& & &  \\
+500& &  &   &	  &	& & & &	  \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\footnotesize
+  \item[*] $\boldsymbol{\Phi}_{j,l}$, for $j=1,\ldots m$, $l=1,\ldots$ is the coefficient in row $j$ and colum $l$ of $\boldsymbol{\Phi}$.
+\item[*] $r_{0}$ is true value of factor, we assume the number of factor is $2$.
+ \item[*] $\left\| \boldsymbol{D} \right\|_{2}$ is the spectral norm of a matrix $\boldsymbol{D}$, where $\boldsymbol{D}$ is the square root of the largest eigenvalue of the matrix $\boldsymbol{A}^{'}\boldsymbol{A}$ and $\boldsymbol{A}=\hat{\boldsymbol{\Phi}}- \boldsymbol{\Phi}^{0}$. $\boldsymbol{\Phi}^{0}$ is the true value of matrix $\boldsymbol{\Phi}$.
+ \item[*] $\left\| \boldsymbol{F} \right\|_{F} $ is the Frobenius norm loss which is equal to the square root of the matrix trace of $AA^{'}$.
+    \end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+
+\addcontentsline{toc}{section}{Reference}
+\renewcommand\refname{References}
+\bibliographystyle{chicago}
+\bibliography{1234}
+
+\end{document}  \href{}{} 
